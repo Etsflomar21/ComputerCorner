@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f8fafc"/><stop offset=".55" stop-color="#cbd5e1"/><stop offset="1" stop-color="#94a3b8"/></linearGradient></defs>
+  <rect width="360" height="220" rx="22" fill="url(#g)"/>
+  <path d="M209 70c-10 6-16 15-15 26 16 1 31-13 32-28-6-1-12 0-17 2zM221 116c-1-21-18-32-32-32-13 0-18 7-27 7-9 0-16-7-28-7-15 0-34 14-34 43 0 25 20 58 36 58 9 0 14-6 26-6s16 6 27 6c15 0 28-24 33-36-20-9-23-37-1-33z" fill="#111827"/>
+  <text x="180" y="198" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="900" fill="#111827">Mac</text>
+</svg>
