@@ -62,6 +62,12 @@ body {
     linear-gradient(180deg, #ffffff 0%, var(--paper) 42%, #ffffff 100%);
 }
 
+body {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
 body::selection {
   color: #ffffff;
   background: #0554dc;
@@ -163,14 +169,14 @@ a {
 
 .brand-name {
   color: var(--navy);
-  font-size: 1.18rem;
+  font-size: 1.2rem;
   font-weight: 900;
   letter-spacing: 0;
 }
 
 .brand-subtitle {
   color: var(--accent);
-  font-size: 0.66rem;
+  font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -181,7 +187,7 @@ a {
   align-items: center;
   gap: clamp(12px, 3vw, 30px);
   color: #172943;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 800;
 }
 
@@ -247,7 +253,7 @@ a {
 .section-kicker {
   margin: 0 0 12px;
   color: var(--gold);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -263,7 +269,8 @@ p {
 h1 {
   max-width: 760px;
   margin-bottom: 22px;
-  font-size: clamp(2.15rem, 4.45vw, 4.25rem);
+  color: #ffffff;
+  font-size: clamp(2.1rem, 4.2vw, 4rem);
   line-height: 1.04;
   letter-spacing: 0;
   text-wrap: balance;
@@ -274,7 +281,9 @@ h1 {
   max-width: 650px;
   margin-bottom: 28px;
   color: rgba(255, 255, 255, 0.9);
-  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-size: clamp(1rem, 1.7vw, 1.18rem);
+  font-weight: 500;
+  line-height: 1.75;
 }
 
 .hero-actions {
@@ -380,7 +389,8 @@ h1 {
 .section-heading h2,
 .contact h2 {
   margin-bottom: 0;
-  font-size: clamp(1.8rem, 3vw, 3rem);
+  color: var(--navy);
+  font-size: clamp(1.65rem, 2.7vw, 2.65rem);
   line-height: 1.15;
   font-weight: 900;
 }
@@ -415,7 +425,8 @@ h1 {
 .product-teaser-content h2 {
   max-width: 760px;
   margin-bottom: 16px;
-  font-size: clamp(1.8rem, 3vw, 3rem);
+  color: var(--navy);
+  font-size: clamp(1.65rem, 2.7vw, 2.65rem);
   line-height: 1.15;
 }
 
@@ -423,6 +434,8 @@ h1 {
   max-width: 720px;
   margin-bottom: 0;
   color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.72;
 }
 
 .product-link-card {
@@ -1860,6 +1873,129 @@ h1 {
     scroll-behavior: auto !important;
     transition-duration: 1ms !important;
   }
+}
+
+/* Final typography polish */
+.section-kicker,
+.eyebrow {
+  color: #ff9f1a;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.section-heading h2,
+.product-teaser-content h2,
+.catalog-intro h2,
+.products-section > .section-heading h2 {
+  color: #061221;
+  font-size: clamp(1.7rem, 2.6vw, 2.55rem);
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.products-hero h1,
+.professional-hero h1 {
+  font-size: clamp(2rem, 3.8vw, 3.65rem);
+  line-height: 1.05;
+}
+
+.product-link-card strong,
+.professional-card h3,
+.product-card h3,
+.service-card h3,
+.package-grid h3,
+.catalog-heading h3 {
+  letter-spacing: 0;
+}
+
+.catalog-heading h3 {
+  color: #061221;
+  font-size: clamp(1.32rem, 2vw, 1.9rem);
+  line-height: 1.15;
+}
+
+.service-card h3 {
+  color: #061221;
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.product-card h3,
+.professional-card h3 {
+  color: #061221;
+  font-size: 1.08rem;
+  line-height: 1.3;
+}
+
+.product-link-card strong {
+  font-size: 1.25rem;
+}
+
+.trust-grid strong,
+.timeline strong {
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.hero-copy,
+.product-teaser-content p,
+.trust-grid p,
+.service-card p,
+.timeline p,
+.catalog-intro p,
+.catalog-heading p,
+.product-card p,
+.professional-card p,
+.package-grid p,
+.product-note p:not(.section-kicker),
+.phone-rom-content p {
+  color: #4a5a73;
+  font-size: 0.94rem;
+  font-weight: 500;
+  line-height: 1.68;
+}
+
+.hero-copy,
+.products-hero p:not(.eyebrow),
+.professional-hero p:not(.eyebrow) {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: clamp(1rem, 1.55vw, 1.12rem);
+  line-height: 1.72;
+}
+
+.product-details li {
+  color: #40516a;
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.42;
+}
+
+.button,
+.buy-button,
+.product-card a,
+.professional-card a,
+.footer-cta,
+.phone-rom-content a {
+  font-size: 0.92rem;
+  letter-spacing: 0;
+}
+
+.brand-name {
+  font-size: 1.18rem;
+}
+
+.brand-subtitle,
+.nav {
+  font-size: 0.88rem;
+}
+
+.product-badge,
+.professional-icon,
+.category-icon,
+.package-grid span {
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
 }
 
 .package-grid span {
