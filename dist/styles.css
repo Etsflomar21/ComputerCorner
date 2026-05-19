@@ -691,8 +691,8 @@ h1 {
 }
 
 .timeline div {
-  min-height: 210px;
-  padding: 28px;
+  min-height: 132px;
+  padding: 24px 22px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
   transition: background 180ms ease, transform 180ms ease;
 }
@@ -704,7 +704,7 @@ h1 {
 
 .timeline strong {
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: #0747b6;
   font-size: 1.05rem;
 }
@@ -2150,6 +2150,17 @@ h1 {
 
 .timeline strong {
   color: #0554dc;
+}
+
+.timeline div {
+  display: grid;
+  align-content: center;
+}
+
+.timeline p {
+  max-width: 280px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .section-heading .section-kicker {
