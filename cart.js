@@ -10,7 +10,12 @@
   const checkoutButton = document.querySelector("#checkout-button");
   const clearButton = document.querySelector("#clear-cart");
 
+  if (!cartButton || !cartDrawer || !cartItems || !cartCount || !checkoutButton || !clearButton) {
+    return;
+  }
+
   let cart = loadCart();
+  let toastTimeout;
 
   function loadCart() {
     try {
@@ -72,6 +77,7 @@
     }
     saveCart();
     renderCart();
+    showToast(`${product.name} agregado al carrito`);
     openCart();
   }
 
@@ -96,6 +102,7 @@
   function renderCart() {
     const total = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = String(total);
+    cartButton.setAttribute("aria-label", `Abrir carrito, ${total} productos`);
 
     if (!cart.length) {
       cartItems.innerHTML = '<p class="cart-empty">Todavía no agregaste productos.</p>';
@@ -156,10 +163,30 @@
 
   function openCart() {
     cartDrawer.setAttribute("aria-hidden", "false");
+    cartClose?.focus();
   }
 
   function closeCart() {
     cartDrawer.setAttribute("aria-hidden", "true");
+    cartButton?.focus();
+  }
+
+  function showToast(message) {
+    let toast = document.querySelector(".cart-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.className = "cart-toast";
+      toast.setAttribute("role", "status");
+      toast.setAttribute("aria-live", "polite");
+      document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.dataset.visible = "true";
+    window.clearTimeout(toastTimeout);
+    toastTimeout = window.setTimeout(() => {
+      toast.dataset.visible = "false";
+    }, 2200);
   }
 
   cartButton?.addEventListener("click", openCart);
@@ -173,6 +200,12 @@
 
   cartDrawer?.addEventListener("click", (event) => {
     if (event.target === cartDrawer) closeCart();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && cartDrawer.getAttribute("aria-hidden") === "false") {
+      closeCart();
+    }
   });
 
   cartItems?.addEventListener("click", (event) => {
