@@ -2099,6 +2099,68 @@ h1 {
   max-width: none;
 }
 
+/* Home alignment polish */
+.trust .section-heading,
+.services .section-heading,
+.process .section-heading {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.trust-grid article,
+.service-card,
+.timeline div {
+  text-align: center;
+}
+
+.trust-grid p,
+.service-card p,
+.timeline p {
+  text-align: center;
+}
+
+.service-card .icon {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.timeline strong {
+  color: #0554dc;
+}
+
+.section-heading .section-kicker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-heading .section-kicker::before,
+.section-heading .section-kicker::after {
+  content: "";
+  width: 28px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0554dc, #00d4ff);
+}
+
+.section-heading .section-kicker::before {
+  margin-right: 10px;
+}
+
+.section-heading .section-kicker::after {
+  margin-left: 10px;
+}
+
+.product-teaser .section-kicker::before,
+.product-teaser .section-kicker::after,
+.service-catalog-teaser .section-kicker::before,
+.service-catalog-teaser .section-kicker::after,
+.contact-strip .section-kicker::before,
+.contact-strip .section-kicker::after {
+  display: none;
+}
+
 @media (max-width: 980px) {
   .trust-grid,
   .service-grid,
