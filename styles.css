@@ -1298,6 +1298,13 @@ h1 {
   fill: currentColor;
 }
 
+.social-links img {
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+}
+
 .whatsapp-float {
   position: fixed;
   right: 22px;
