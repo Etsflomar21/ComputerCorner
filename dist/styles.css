@@ -1563,25 +1563,40 @@ h1 {
 }
 
 .category-icon {
-  display: grid;
+  display: inline-flex;
   width: 44px;
   height: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  min-height: 44px;
+  max-height: 44px;
   flex: 0 0 auto;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   color: #ffffff;
   border-radius: 8px;
   font-size: 0.86rem;
   font-weight: 900;
   line-height: 1;
+  overflow: hidden;
   box-shadow: 0 14px 32px rgba(4, 22, 45, 0.14);
 }
 
 .category-icon svg {
+  display: block;
   width: 22px !important;
   height: 22px !important;
   max-width: 22px;
   max-height: 22px;
+  min-width: 22px;
+  min-height: 22px;
+  flex: 0 0 22px;
   fill: currentColor;
+}
+
+.category-icon svg path {
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 .office-category-icon {
