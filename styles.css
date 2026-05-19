@@ -107,8 +107,9 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 14px clamp(18px, 5vw, 72px);
-  background: rgba(249, 252, 255, 0.9);
+  padding: 12px clamp(18px, 5vw, 72px);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.96), rgba(239, 247, 255, 0.92));
   border-bottom: 1px solid rgba(183, 211, 242, 0.75);
   box-shadow: 0 14px 34px rgba(4, 22, 45, 0.08);
   backdrop-filter: blur(18px);
@@ -129,15 +130,15 @@ a {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   font-weight: 900;
   color: var(--navy);
 }
 
 .brand-logo-wrap {
   display: grid;
-  width: 62px;
-  height: 62px;
+  width: 58px;
+  height: 58px;
   place-items: center;
   border: 1px solid rgba(9, 105, 255, 0.18);
   border-radius: 50%;
@@ -154,8 +155,8 @@ a {
 }
 
 .brand-logo {
-  width: 54px;
-  height: 54px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
   border-radius: 50%;
   background: #ffffff;
@@ -163,8 +164,8 @@ a {
 
 .brand-text {
   display: grid;
-  gap: 2px;
-  line-height: 1.1;
+  gap: 3px;
+  line-height: 1;
 }
 
 .brand-name {
@@ -183,20 +184,24 @@ a {
 }
 
 .brand-role {
-  color: #40516a;
-  font-size: 0.7rem;
+  color: #526178;
+  font-size: 0.64rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 3vw, 30px);
+  gap: 8px;
   color: #172943;
   font-size: 0.92rem;
   font-weight: 800;
+  padding: 6px;
+  border: 1px solid rgba(183, 211, 242, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
 }
 
 .nav a:hover {
@@ -205,24 +210,19 @@ a {
 
 .nav a {
   position: relative;
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: color 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
 .nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -8px;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #0554dc, var(--cyan));
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 180ms ease;
+  display: none;
 }
 
-.nav a:hover::after {
-  transform: scaleX(1);
+.nav a:hover {
+  color: #0554dc;
+  background: linear-gradient(180deg, #ffffff 0%, #eaf6ff 100%);
+  transform: translateY(-1px);
 }
 
 .service-card {
@@ -2198,13 +2198,16 @@ h1 {
 }
 
 .brand-name {
-  font-size: 1.18rem;
+  font-size: 1.16rem;
 }
 
 .brand-subtitle,
-.brand-role,
 .nav {
   font-size: 0.88rem;
+}
+
+.brand-role {
+  font-size: 0.64rem;
 }
 
 .product-badge,
@@ -2399,6 +2402,9 @@ h1 {
     overflow-x: auto;
     padding-bottom: 4px;
     font-size: 0.88rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
     scrollbar-width: none;
   }
 
