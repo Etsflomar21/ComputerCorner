@@ -134,7 +134,7 @@
   }
 
   function selectedPayment() {
-    return document.querySelector('input[name="payment"]:checked')?.value || "Tarjeta";
+    return document.querySelector('input[name="payment"]:checked')?.value || "Pasarela segura con tarjeta";
   }
 
   function checkout() {
