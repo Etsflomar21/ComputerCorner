@@ -231,10 +231,10 @@ a {
 
 .hero {
   position: relative;
-  min-height: 72vh;
+  min-height: clamp(430px, 58vh, 540px);
   display: grid;
   align-items: center;
-  padding: 108px clamp(20px, 6vw, 84px) 58px;
+  padding: 82px clamp(20px, 6vw, 84px) 44px;
   color: var(--white);
   background-image: url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=85");
   background-position: center;
@@ -276,7 +276,7 @@ p {
 
 h1 {
   max-width: 760px;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
   color: #ffffff;
   font-size: clamp(2.1rem, 4.2vw, 4rem);
   line-height: 1.04;
@@ -287,7 +287,7 @@ h1 {
 
 .hero-copy {
   max-width: 650px;
-  margin-bottom: 28px;
+  margin-bottom: 22px;
   color: rgba(255, 255, 255, 0.9);
   font-size: clamp(1rem, 1.7vw, 1.18rem);
   font-weight: 500;
@@ -2430,8 +2430,8 @@ h1 {
   }
 
   .hero {
-    min-height: 72vh;
-    padding: 72px 20px 46px;
+    min-height: auto;
+    padding: 58px 20px 38px;
   }
 
   .hero-actions,
