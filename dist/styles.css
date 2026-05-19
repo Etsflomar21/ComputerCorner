@@ -555,6 +555,109 @@ h1 {
   gap: 12px;
 }
 
+.modal-open {
+  overflow: hidden;
+}
+
+.contact-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.contact-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.contact-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(0, 212, 255, 0.16), transparent 28%),
+    rgba(2, 11, 28, 0.74);
+  backdrop-filter: blur(10px);
+}
+
+.contact-modal-card {
+  position: relative;
+  z-index: 1;
+  width: min(760px, 100%);
+  padding: clamp(28px, 5vw, 46px);
+  color: #ffffff;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 86% 12%, rgba(0, 212, 255, 0.28), transparent 34%),
+    linear-gradient(135deg, #05245b 0%, #020b1c 100%);
+  box-shadow: 0 34px 100px rgba(0, 0, 0, 0.34);
+  transform: translateY(14px) scale(0.98);
+  transition: transform 220ms ease;
+}
+
+.contact-modal.is-open .contact-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.contact-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.contact-modal-close:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: rotate(90deg);
+}
+
+.contact-modal-card .section-kicker {
+  justify-content: center;
+}
+
+.contact-modal-card h2 {
+  max-width: 680px;
+  margin: 0 auto 14px;
+  color: #ffffff;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.1;
+}
+
+.contact-modal-card p:not(.section-kicker) {
+  max-width: 640px;
+  margin: 0 auto 24px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.contact-modal-card .contact-actions {
+  justify-content: center;
+}
+
 .service-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

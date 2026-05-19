@@ -156,19 +156,21 @@
       </div>
     </section>
 
-    <section class="section contact-strip" aria-label="Contacto rápido">
-      <div>
-        <p class="section-kicker">Atención rápida</p>
-        <h2>Cuéntame qué necesitas y te respondo con una ruta clara.</h2>
-        <p>Soporte, instalación, desarrollo web, redes, compras tecnológicas o asesoría: reviso tu caso y te indico el siguiente paso.</p>
-      </div>
+  </main>
+
+  <div class="contact-modal" data-contact-modal aria-hidden="true">
+    <div class="contact-modal-backdrop" data-close-contact-modal></div>
+    <section class="contact-modal-card" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+      <button class="contact-modal-close" type="button" data-close-contact-modal aria-label="Cerrar aviso">×</button>
+      <p class="section-kicker">Atención rápida</p>
+      <h2 id="contact-modal-title">Cuéntame qué necesitas y te respondo con una ruta clara.</h2>
+      <p>Soporte, instalación, desarrollo web, redes, compras tecnológicas o asesoría: reviso tu caso y te indico el siguiente paso.</p>
       <div class="contact-actions">
         <a class="button primary" href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20necesito%20ayuda%20con%20un%20servicio%20tecnol%C3%B3gico." target="_blank" rel="noreferrer">Escribir por WhatsApp</a>
         <a class="button secondary light" href="mailto:computer-corner@outlook.com">Enviar correo</a>
       </div>
     </section>
-
-  </main>
+  </div>
 
   <footer class="footer" id="contacto">
     <div class="footer-main">
@@ -209,5 +211,37 @@
       <path d="M16 3.2A12.7 12.7 0 0 0 5.3 22.8L3.7 28.6l6-1.5A12.7 12.7 0 1 0 16 3.2Zm0 23.2c-2 0-3.8-.5-5.5-1.5l-.4-.2-3.5.9.9-3.4-.2-.4A10.4 10.4 0 1 1 16 26.4Zm5.8-7.8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1a8.5 8.5 0 0 1-2.5-1.5 9.3 9.3 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5s0-.4 0-.6-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.8 1.2 3.2 1.3 3.4c.2.2 2.4 3.7 5.8 5.2.8.3 1.4.5 1.9.7.8.3 1.6.2 2.2.1.7-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.6-.1-.1-.3-.2-.6-.4Z"></path>
     </svg>
   </a>
+
+  <script>
+    (() => {
+      const modal = document.querySelector("[data-contact-modal]");
+      const closeButtons = document.querySelectorAll("[data-close-contact-modal]");
+      const storageKey = "computer-corner-contact-modal-closed";
+
+      if (!modal || sessionStorage.getItem(storageKey) === "true") {
+        return;
+      }
+
+      const closeModal = () => {
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("modal-open");
+        sessionStorage.setItem(storageKey, "true");
+      };
+
+      window.addEventListener("load", () => {
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-open");
+      });
+
+      closeButtons.forEach((button) => button.addEventListener("click", closeModal));
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && modal.classList.contains("is-open")) {
+          closeModal();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
