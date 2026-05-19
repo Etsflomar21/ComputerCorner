@@ -56,6 +56,22 @@
   }
 }
 
+@keyframes heroSlide {
+  0% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  4%,
+  20% {
+    opacity: 1;
+  }
+  24%,
+  100% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -248,19 +264,60 @@ a {
   align-items: center;
   padding: 82px clamp(20px, 6vw, 84px) 44px;
   color: var(--white);
-  background-image: url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=85");
+  background: var(--deep);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.hero-slides {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--deep);
+}
+
+.hero-slides span {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
   background-position: center;
   background-size: cover;
-  isolation: isolate;
-  animation: softGlow 12s ease-in-out infinite;
+  animation: heroSlide 25s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+.hero-slides span:nth-child(1) {
+  background-image: url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=85");
+  animation-delay: -1s;
+}
+
+.hero-slides span:nth-child(2) {
+  background-image: url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=85");
+  animation-delay: 4s;
+}
+
+.hero-slides span:nth-child(3) {
+  background-image: url("https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1800&q=85");
+  animation-delay: 9s;
+}
+
+.hero-slides span:nth-child(4) {
+  background-image: url("https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1800&q=85");
+  animation-delay: 14s;
+}
+
+.hero-slides span:nth-child(5) {
+  background-image: url("https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=85");
+  animation-delay: 19s;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
+  z-index: -1;
   background:
     radial-gradient(circle at 73% 28%, rgba(0, 212, 255, 0.24), transparent 32%),
-    linear-gradient(90deg, rgba(2, 11, 28, 0.92), rgba(5, 31, 70, 0.68), rgba(2, 11, 28, 0.3));
+    linear-gradient(90deg, rgba(2, 11, 28, 0.94), rgba(5, 31, 70, 0.72), rgba(2, 11, 28, 0.34));
 }
 
 .hero-content {
@@ -2264,6 +2321,16 @@ h1 {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 1ms !important;
+  }
+
+  .hero-slides span {
+    animation: none !important;
+    opacity: 0;
+    transform: none;
+  }
+
+  .hero-slides span:first-child {
+    opacity: 1;
   }
 }
 
