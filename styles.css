@@ -583,7 +583,7 @@ h1 {
   inset: 0;
   background:
     radial-gradient(circle at 18% 18%, rgba(0, 212, 255, 0.16), transparent 28%),
-    rgba(2, 11, 28, 0.74);
+    rgba(2, 11, 28, 0.84);
   backdrop-filter: blur(10px);
 }
 

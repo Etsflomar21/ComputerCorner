@@ -216,9 +216,8 @@
     (() => {
       const modal = document.querySelector("[data-contact-modal]");
       const closeButtons = document.querySelectorAll("[data-close-contact-modal]");
-      const storageKey = "computer-corner-contact-modal-closed";
 
-      if (!modal || sessionStorage.getItem(storageKey) === "true") {
+      if (!modal) {
         return;
       }
 
@@ -226,10 +225,9 @@
         modal.classList.remove("is-open");
         modal.setAttribute("aria-hidden", "true");
         document.body.classList.remove("modal-open");
-        sessionStorage.setItem(storageKey, "true");
       };
 
-      window.addEventListener("load", () => {
+      window.addEventListener("DOMContentLoaded", () => {
         modal.classList.add("is-open");
         modal.setAttribute("aria-hidden", "false");
         document.body.classList.add("modal-open");
