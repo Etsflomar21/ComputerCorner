@@ -1028,20 +1028,33 @@ h1 {
 }
 
 .footer {
+  position: relative;
   padding: 0;
   color: rgba(255, 255, 255, 0.78);
   background:
-    radial-gradient(circle at 86% 18%, rgba(0, 212, 255, 0.16), transparent 28%),
-    linear-gradient(135deg, #04162d 0%, #020b1c 100%);
+    radial-gradient(circle at 12% 18%, rgba(0, 212, 255, 0.13), transparent 25%),
+    radial-gradient(circle at 86% 12%, rgba(255, 184, 77, 0.1), transparent 24%),
+    linear-gradient(135deg, #04162d 0%, #021025 54%, #020b1c 100%);
+  overflow: hidden;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, #0554dc, #00d4ff, #ffb84d, #0554dc);
+  background-size: 200% 100%;
+  animation: shineLine 7s linear infinite;
 }
 
 .footer-main {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(260px, 1.2fr) minmax(220px, 0.8fr) auto;
   gap: 24px;
   align-items: center;
-  padding: 30px clamp(20px, 6vw, 84px);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 34px clamp(20px, 6vw, 84px) 28px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -1049,6 +1062,17 @@ h1 {
   display: flex;
   align-items: center;
   gap: 14px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.footer-brand:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 212, 255, 0.32);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .footer-brand img {
@@ -1078,26 +1102,41 @@ h1 {
 
 .footer-contact {
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 
 .footer-contact a {
+  display: block;
+  width: fit-content;
+  padding: 8px 12px;
   color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
   font-weight: 800;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
 .footer-contact a:hover,
 .footer-bottom a:hover {
   color: var(--cyan);
+  transform: translateX(3px);
+}
+
+.footer-contact a:hover {
+  border-color: rgba(0, 212, 255, 0.44);
+  background: rgba(0, 212, 255, 0.08);
 }
 
 .footer-bottom {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
   flex-wrap: wrap;
-  padding: 16px clamp(20px, 6vw, 84px);
+  padding: 18px clamp(20px, 6vw, 84px);
+  background: rgba(1, 8, 20, 0.36);
 }
 
 .footer-bottom p {
@@ -1105,8 +1144,29 @@ h1 {
 }
 
 .footer-bottom a {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
   color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
   font-weight: 900;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.footer-bottom a::before {
+  content: "↑";
+  margin-right: 8px;
+  color: var(--cyan);
+}
+
+.footer-bottom a:hover {
+  border-color: rgba(0, 212, 255, 0.5);
+  background: rgba(0, 212, 255, 0.08);
+  transform: translateY(-2px);
 }
 
 .social-links {
@@ -1116,6 +1176,7 @@ h1 {
 }
 
 .social-links a {
+  position: relative;
   display: grid;
   width: 40px;
   height: 40px;
@@ -1126,14 +1187,29 @@ h1 {
   background: rgba(255, 255, 255, 0.08);
   font-size: 1rem;
   font-weight: 900;
+  overflow: hidden;
   transition: color 180ms ease, border-color 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+.social-links a::before {
+  content: "";
+  position: absolute;
+  inset: -40% auto -40% -80%;
+  width: 55%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+  transform: rotate(18deg);
+  transition: left 420ms ease;
 }
 
 .social-links a:hover {
   color: #ffffff;
   border-color: rgba(0, 212, 255, 0.7);
   background: linear-gradient(135deg, #0554dc, var(--cyan));
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.04);
+}
+
+.social-links a:hover::before {
+  left: 120%;
 }
 
 .social-links svg {
@@ -2371,8 +2447,7 @@ h1 {
 
 .product-teaser-content,
 .contact-strip > div:first-child,
-.product-link-card,
-.footer-bottom {
+.product-link-card {
   text-align: center;
 }
 
@@ -2384,6 +2459,11 @@ h1 {
 .footer-bottom p {
   margin-right: auto;
   margin-left: auto;
+}
+
+.contact-strip h2,
+.contact-strip p:not(.section-kicker),
+.product-link-card small {
   text-align: center;
 }
 
