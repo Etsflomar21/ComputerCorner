@@ -163,7 +163,7 @@ a {
 
 .brand-text {
   display: grid;
-  gap: 1px;
+  gap: 2px;
   line-height: 1.1;
 }
 
@@ -179,6 +179,14 @@ a {
   font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand-role {
+  color: #40516a;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -2194,6 +2202,7 @@ h1 {
 }
 
 .brand-subtitle,
+.brand-role,
 .nav {
   font-size: 0.88rem;
 }
@@ -2378,6 +2387,10 @@ h1 {
 
   .brand-subtitle {
     font-size: 0.62rem;
+  }
+
+  .brand-role {
+    font-size: 0.58rem;
   }
 
   .nav {
