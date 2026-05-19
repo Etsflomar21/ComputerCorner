@@ -2120,6 +2120,29 @@ h1 {
   text-align: center;
 }
 
+.product-teaser-content,
+.contact-strip > div:first-child,
+.product-link-card,
+.footer-bottom {
+  text-align: center;
+}
+
+.product-teaser-content h2,
+.product-teaser-content p,
+.contact-strip h2,
+.contact-strip p:not(.section-kicker),
+.product-link-card small,
+.footer-bottom p {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.product-link-card span {
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .service-card .icon {
   margin-right: auto;
   margin-left: auto;
