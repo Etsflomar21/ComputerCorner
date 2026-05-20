@@ -70,7 +70,7 @@
           <div class="professional-card-body">
             <h3>Tecnológico</h3>
             <p>Ingeniería de sistemas, programación, desarrollo web, bases de datos, redes, ciberseguridad, IA y cloud.</p>
-            <ul class="product-details">
+            <ul class="product-details professional-detail-list" id="detail-tech" hidden>
               <li>Java, Python, C#, Kotlin y Android Studio</li>
               <li>HTML, CSS, JavaScript y PHP</li>
               <li>SQL Server, MySQL, Oracle y Power BI</li>
@@ -79,7 +79,10 @@
               <li>Automatización, scripts y soporte con IA</li>
               <li>Corrección de errores y explicación de proyectos</li>
             </ul>
-            <a href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20quiero%20consultar%20por%20servicios%20tecnol%C3%B3gicos." target="_blank" rel="noreferrer">Consultar</a>
+            <div class="professional-actions">
+              <button class="service-info-button" type="button" data-service-detail="detail-tech">Ver más información</button>
+              <a href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20quiero%20consultar%20por%20servicios%20tecnol%C3%B3gicos." target="_blank" rel="noreferrer">Consultar</a>
+            </div>
           </div>
         </article>
 
@@ -91,7 +94,7 @@
           <div class="professional-card-body">
             <h3>Académico</h3>
             <p>Asesoría para tareas académicas, preparación de exámenes, investigación, tesis, monografías, revisiones sistemáticas y estructura documental.</p>
-            <ul class="product-details">
+            <ul class="product-details professional-detail-list" id="detail-academic" hidden>
               <li>Orientación para tareas, ejercicios y desarrollo guiado paso a paso</li>
               <li>Preparación para exámenes, prácticas y preguntas de suficiencia de institutos</li>
               <li>Tesis, monografías, RSL/SLR y PRISMA</li>
@@ -100,7 +103,10 @@
               <li>Sustentación, diapositivas, simulación de exposición y defensa oral</li>
               <li>Corrección de avances, observaciones y estructura final</li>
             </ul>
-            <a href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20quiero%20consultar%20por%20asesor%C3%ADa%20acad%C3%A9mica." target="_blank" rel="noreferrer">Consultar</a>
+            <div class="professional-actions">
+              <button class="service-info-button" type="button" data-service-detail="detail-academic">Ver más información</button>
+              <a href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20quiero%20consultar%20por%20asesor%C3%ADa%20acad%C3%A9mica." target="_blank" rel="noreferrer">Consultar</a>
+            </div>
           </div>
         </article>
 
@@ -112,7 +118,7 @@
           <div class="professional-card-body">
             <h3>Empresarial</h3>
             <p>Soluciones para análisis, arquitectura, calidad de software, operaciones y toma de decisiones.</p>
-            <ul class="product-details">
+            <ul class="product-details professional-detail-list" id="detail-business" hidden>
               <li>Arquitectura empresarial y diagramas UML</li>
               <li>Calidad de software y documentación técnica</li>
               <li>Business Intelligence, Power BI y dashboards</li>
@@ -121,7 +127,10 @@
               <li>Modelado de requerimientos y casos de uso</li>
               <li>Presentaciones ejecutivas y documentación profesional</li>
             </ul>
-            <a href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20quiero%20consultar%20por%20servicios%20empresariales." target="_blank" rel="noreferrer">Consultar</a>
+            <div class="professional-actions">
+              <button class="service-info-button" type="button" data-service-detail="detail-business">Ver más información</button>
+              <a href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20quiero%20consultar%20por%20servicios%20empresariales." target="_blank" rel="noreferrer">Consultar</a>
+            </div>
           </div>
         </article>
 
@@ -133,7 +142,7 @@
           <div class="professional-card-body">
             <h3>Diseño Multimedia</h3>
             <p>Apoyo visual para presentaciones, marca, piezas digitales, edición y materiales académicos o comerciales.</p>
-            <ul class="product-details">
+            <ul class="product-details professional-detail-list" id="detail-design" hidden>
               <li>Photoshop, Illustrator y Canva</li>
               <li>Edición de video y diseño de presentaciones</li>
               <li>Logos, branding y material publicitario</li>
@@ -142,7 +151,10 @@
               <li>Portadas, infografías y material académico visual</li>
               <li>Optimización visual de documentos y propuestas</li>
             </ul>
-            <a href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20quiero%20consultar%20por%20dise%C3%B1o%20y%20multimedia." target="_blank" rel="noreferrer">Consultar</a>
+            <div class="professional-actions">
+              <button class="service-info-button" type="button" data-service-detail="detail-design">Ver más información</button>
+              <a href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20quiero%20consultar%20por%20dise%C3%B1o%20y%20multimedia." target="_blank" rel="noreferrer">Consultar</a>
+            </div>
           </div>
         </article>
       </div>
@@ -208,6 +220,17 @@
     </section>
   </main>
 
+  <div class="service-detail-modal" data-service-modal aria-hidden="true">
+    <div class="service-detail-backdrop" data-close-service-modal></div>
+    <section class="service-detail-card" role="dialog" aria-modal="true" aria-labelledby="service-modal-title">
+      <button class="service-detail-close" type="button" data-close-service-modal aria-label="Cerrar información">×</button>
+      <p class="section-kicker">Detalle del servicio</p>
+      <h2 id="service-modal-title">Servicio profesional</h2>
+      <p id="service-modal-description"></p>
+      <div class="service-detail-content" data-service-modal-content></div>
+    </section>
+  </div>
+
   <footer class="footer" id="contacto">
     <div class="footer-main">
       <div class="footer-brand">
@@ -247,5 +270,55 @@
       <path d="M16 3.2A12.7 12.7 0 0 0 5.3 22.8L3.7 28.6l6-1.5A12.7 12.7 0 1 0 16 3.2Zm0 23.2c-2 0-3.8-.5-5.5-1.5l-.4-.2-3.5.9.9-3.4-.2-.4A10.4 10.4 0 1 1 16 26.4Zm5.8-7.8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1a8.5 8.5 0 0 1-2.5-1.5 9.3 9.3 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5s0-.4 0-.6-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.8 1.2 3.2 1.3 3.4c.2.2 2.4 3.7 5.8 5.2.8.3 1.4.5 1.9.7.8.3 1.6.2 2.2.1.7-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.6-.1-.1-.3-.2-.6-.4Z"></path>
     </svg>
   </a>
+
+  <script>
+    (() => {
+      const modal = document.querySelector("[data-service-modal]");
+      const title = document.querySelector("#service-modal-title");
+      const description = document.querySelector("#service-modal-description");
+      const content = document.querySelector("[data-service-modal-content]");
+      const closeButtons = document.querySelectorAll("[data-close-service-modal]");
+      let activeTrigger = null;
+
+      if (!modal || !title || !description || !content) {
+        return;
+      }
+
+      const openModal = (button) => {
+        const card = button.closest(".professional-card");
+        const detail = document.getElementById(button.dataset.serviceDetail);
+        if (!card || !detail) return;
+
+        activeTrigger = button;
+        title.textContent = card.querySelector("h3")?.textContent.trim() || "Servicio profesional";
+        description.textContent = card.querySelector("p")?.textContent.trim() || "";
+        content.replaceChildren(detail.cloneNode(true));
+        content.querySelector(".professional-detail-list")?.removeAttribute("hidden");
+
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-open");
+        modal.querySelector(".service-detail-close")?.focus();
+      };
+
+      const closeModal = () => {
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("modal-open");
+        activeTrigger?.focus();
+      };
+
+      document.querySelectorAll("[data-service-detail]").forEach((button) => {
+        button.addEventListener("click", () => openModal(button));
+      });
+
+      closeButtons.forEach((button) => button.addEventListener("click", closeModal));
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && modal.classList.contains("is-open")) {
+          closeModal();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
