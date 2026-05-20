@@ -30,6 +30,10 @@
       <a href="#servicios">Servicios</a>
       <a href="#proceso">Proceso</a>
       <a href="#contacto">Contacto</a>
+      <button class="account-nav-button" type="button" data-account-open aria-label="Abrir cuenta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.4 4.4 0 1 0 0-8.8 4.4 4.4 0 0 0 0 8.8Zm0 2c-4.3 0-7.8 2.4-7.8 5.3 0 .8.6 1.5 1.5 1.5h12.6c.9 0 1.5-.7 1.5-1.5 0-2.9-3.5-5.3-7.8-5.3Z"></path></svg>
+        <span data-account-label>Cuenta</span>
+      </button>
     </nav>
   </header>
 
@@ -172,6 +176,36 @@
 
   </main>
 
+  <div class="account-modal" data-account-modal aria-hidden="true">
+    <div class="account-backdrop" data-account-close></div>
+    <section class="account-card" role="dialog" aria-modal="true" aria-labelledby="account-title">
+      <button class="account-close" type="button" data-account-close aria-label="Cerrar cuenta">×</button>
+      <p class="section-kicker">Área de cliente</p>
+      <h2 id="account-title">Tu cuenta Computer Corner</h2>
+      <div class="account-tabs" role="tablist" aria-label="Opciones de cuenta">
+        <button class="is-active" type="button" data-account-tab="profile" aria-selected="true">Perfil</button>
+        <button type="button" data-account-tab="login" aria-selected="false">Iniciar sesión</button>
+        <button type="button" data-account-tab="register" aria-selected="false">Crear cuenta</button>
+      </div>
+      <div class="account-panel" data-account-panel="profile">
+        <div data-profile-view></div>
+        <button class="button secondary account-logout" type="button" data-account-logout>Cerrar sesión</button>
+      </div>
+      <form class="account-panel account-form" data-account-panel="login" data-login-form hidden>
+        <label>Correo<input type="email" name="email" placeholder="correo@ejemplo.com" required></label>
+        <button class="button primary" type="submit">Iniciar sesión</button>
+        <p>Si el correo no existe, te llevaremos al registro.</p>
+      </form>
+      <form class="account-panel account-form" data-account-panel="register" data-register-form hidden>
+        <label>Nombre completo<input type="text" name="name" placeholder="Tu nombre" required></label>
+        <label>DNI o RUC<input type="text" name="document" placeholder="Documento"></label>
+        <label>Correo<input type="email" name="email" placeholder="correo@ejemplo.com" required></label>
+        <label>Teléfono<input type="tel" name="phone" placeholder="Número de contacto"></label>
+        <button class="button primary" type="submit">Crear cuenta</button>
+      </form>
+    </section>
+  </div>
+
   <div class="contact-modal" data-contact-modal aria-hidden="true">
     <div class="contact-modal-backdrop" data-close-contact-modal></div>
     <section class="contact-modal-card" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
@@ -222,6 +256,35 @@
     </div>
   </footer>
 
+  <button class="support-chat-button" type="button" data-support-toggle aria-expanded="false" aria-label="Abrir chat de soporte">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3C7 3 3.2 6.4 3.2 10.8c0 2.2 1 4.2 2.6 5.6l-.7 3.7 3.7-1.7c1 .3 2.1.5 3.2.5 5 0 8.8-3.4 8.8-8.1S17 3 12 3Zm-3.8 8.7a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Zm3.8 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Zm3.8 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Z"></path>
+    </svg>
+  </button>
+
+  <section class="support-chat" data-support-chat aria-hidden="true" aria-label="Chat de soporte">
+    <header class="support-chat-header">
+      <div>
+        <span>Soporte Computer Corner</span>
+        <small>Atención por mensaje</small>
+      </div>
+      <button type="button" data-support-close aria-label="Cerrar chat">×</button>
+    </header>
+    <div class="support-chat-messages" data-support-messages>
+      <p class="support-message agent">Hola, soy el asistente de soporte. Cuéntame qué necesitas y prepararemos tu consulta para que una persona la revise.</p>
+    </div>
+    <div class="support-quick-actions" aria-label="Consultas rápidas">
+      <button type="button" data-support-topic="Necesito una asesoría académica">Asesoría</button>
+      <button type="button" data-support-topic="Necesito soporte técnico">Soporte técnico</button>
+      <button type="button" data-support-topic="Quiero consultar por un proyecto web">Proyecto web</button>
+    </div>
+    <form class="support-chat-form" data-support-form>
+      <input type="text" data-support-input placeholder="Escribe tu consulta..." aria-label="Escribe tu consulta">
+      <button type="submit">Enviar</button>
+    </form>
+    <a class="support-email-link" data-support-email href="mailto:computer-corner@outlook.com">Enviar consulta por correo</a>
+  </section>
+
   <a class="whatsapp-float" href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" rel="noreferrer" aria-label="Contactar por WhatsApp">
     <svg viewBox="0 0 32 32" aria-hidden="true">
       <path d="M16 3.2A12.7 12.7 0 0 0 5.3 22.8L3.7 28.6l6-1.5A12.7 12.7 0 1 0 16 3.2Zm0 23.2c-2 0-3.8-.5-5.5-1.5l-.4-.2-3.5.9.9-3.4-.2-.4A10.4 10.4 0 1 1 16 26.4Zm5.8-7.8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-.9 1.2-.3.2-.6.1a8.5 8.5 0 0 1-2.5-1.5 9.3 9.3 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5s0-.4 0-.6-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.8 1.2 3.2 1.3 3.4c.2.2 2.4 3.7 5.8 5.2.8.3 1.4.5 1.9.7.8.3 1.6.2 2.2.1.7-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.6-.1-.1-.3-.2-.6-.4Z"></path>
@@ -257,5 +320,7 @@
       });
     })();
   </script>
+  <script src="account.js"></script>
+  <script src="support-chat.js"></script>
 </body>
 </html>

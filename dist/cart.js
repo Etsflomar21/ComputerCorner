@@ -9,6 +9,12 @@
   const cartCount = document.querySelector("#cart-count");
   const checkoutButton = document.querySelector("#checkout-button");
   const clearButton = document.querySelector("#clear-cart");
+  const receiptModal = document.querySelector("[data-receipt-modal]");
+  const receiptPreview = document.querySelector("#receipt-preview");
+  const sendOrder = document.querySelector("#send-order");
+  const printReceipt = document.querySelector("#print-receipt");
+  const closeReceiptButtons = document.querySelectorAll("[data-close-receipt]");
+  const paymentDetails = document.querySelectorAll("[data-payment-detail]");
 
   if (!cartButton || !cartDrawer || !cartItems || !cartCount || !checkoutButton || !clearButton) {
     return;
@@ -144,8 +150,138 @@
     return document.querySelector('input[name="payment"]:checked')?.value || "Pasarela segura con tarjeta";
   }
 
+  function selectedPaymentType() {
+    return document.querySelector('input[name="payment"]:checked')?.dataset.paymentMethod || "card";
+  }
+
+  function fieldValue(selector, fallback = "Por completar") {
+    return document.querySelector(selector)?.value.trim() || fallback;
+  }
+
+  function receiptNumber() {
+    const date = new Date();
+    return `CC-${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}-${String(date.getHours()).padStart(2, "0")}${String(date.getMinutes()).padStart(2, "0")}`;
+  }
+
+  function billingData() {
+    return {
+      name: fieldValue("#billing-name"),
+      document: fieldValue("#billing-document"),
+      email: fieldValue("#billing-email"),
+      payment: selectedPayment(),
+      paymentType: selectedPaymentType(),
+      yapeOperation: fieldValue("#yape-operation", "Pendiente"),
+      yapePhone: fieldValue("#yape-phone", "Pendiente"),
+    };
+  }
+
+  function orderLines() {
+    return cart.map((item, index) => ({
+      index: index + 1,
+      name: item.name,
+      category: item.category,
+      quantity: item.quantity,
+    }));
+  }
+
+  function buildReceipt(data, number) {
+    const rows = orderLines()
+      .map(
+        (item) => `
+          <tr>
+            <td>${item.index}</td>
+            <td><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.category)}</span></td>
+            <td>${item.quantity}</td>
+            <td>Por confirmar</td>
+          </tr>
+        `
+      )
+      .join("");
+
+    const paymentMeta =
+      data.paymentType === "yape"
+        ? `<p><strong>Operación Yape:</strong> ${escapeHtml(data.yapeOperation)}</p><p><strong>Celular Yape:</strong> ${escapeHtml(data.yapePhone)}</p>`
+        : `<p><strong>Pasarela:</strong> Link seguro pendiente de generación.</p>`;
+
+    return `
+      <div class="receipt-head">
+        <div>
+          <p class="section-kicker">Pre-boleta de venta</p>
+          <h2 id="receipt-title">Pedido ${escapeHtml(number)}</h2>
+          <p>Documento preliminar. La boleta oficial se emite al confirmar disponibilidad y pago.</p>
+        </div>
+        <strong>Computer Corner</strong>
+      </div>
+      <div class="receipt-meta">
+        <p><strong>Cliente:</strong> ${escapeHtml(data.name)}</p>
+        <p><strong>DNI/RUC:</strong> ${escapeHtml(data.document)}</p>
+        <p><strong>Correo:</strong> ${escapeHtml(data.email)}</p>
+        <p><strong>Pago:</strong> ${escapeHtml(data.payment)}</p>
+        ${paymentMeta}
+      </div>
+      <table class="receipt-table">
+        <thead><tr><th>#</th><th>Producto</th><th>Cant.</th><th>Importe</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="receipt-total"><span>Total</span><strong>Por confirmar</strong></div>
+    `;
+  }
+
+  function buildWhatsappMessage(data, number) {
+    const products = orderLines()
+      .map((item) => `${item.index}. ${item.name} x${item.quantity} (${item.category})`)
+      .join("\n");
+
+    const paymentDetail =
+      data.paymentType === "yape"
+        ? `Operación Yape: ${data.yapeOperation}\nCelular Yape: ${data.yapePhone}`
+        : "Solicito link de pasarela segura para pagar con tarjeta.";
+
+    return [
+      `Hola Computer Corner, generé la pre-boleta ${number}.`,
+      "",
+      "Datos para boleta:",
+      `Cliente: ${data.name}`,
+      `DNI/RUC: ${data.document}`,
+      `Correo: ${data.email}`,
+      "",
+      "Productos:",
+      products,
+      "",
+      `Forma de pago: ${data.payment}`,
+      paymentDetail,
+      "",
+      "Por favor confirma disponibilidad, importe final y emisión de la boleta.",
+    ].join("\n");
+  }
+
+  function openReceipt(data, number) {
+    if (!receiptModal || !receiptPreview || !sendOrder) return;
+    receiptPreview.innerHTML = buildReceipt(data, number);
+    sendOrder.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsappMessage(data, number))}`;
+    receiptModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  }
+
+  function closeReceipt() {
+    receiptModal?.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    checkoutButton?.focus();
+  }
+
+  function syncPaymentDetails() {
+    const type = selectedPaymentType();
+    paymentDetails.forEach((detail) => {
+      detail.hidden = detail.dataset.paymentDetail !== type;
+    });
+  }
+
   function checkout() {
     if (!cart.length) return;
+    const data = billingData();
+    const number = receiptNumber();
+    openReceipt(data, number);
+    return;
 
     const products = cart
       .map((item, index) => `${index + 1}. ${item.name} x${item.quantity} (${item.category})`)
@@ -192,6 +328,12 @@
   cartButton?.addEventListener("click", openCart);
   cartClose?.addEventListener("click", closeCart);
   checkoutButton?.addEventListener("click", checkout);
+  printReceipt?.addEventListener("click", () => window.print());
+  closeReceiptButtons.forEach((button) => button.addEventListener("click", closeReceipt));
+  document.querySelector('[data-payment-method="card"]')?.click();
+  document.querySelectorAll('input[name="payment"]').forEach((input) => {
+    input.addEventListener("change", syncPaymentDetails);
+  });
   clearButton?.addEventListener("click", () => {
     cart = [];
     saveCart();
@@ -206,6 +348,9 @@
     if (event.key === "Escape" && cartDrawer.getAttribute("aria-hidden") === "false") {
       closeCart();
     }
+    if (event.key === "Escape" && receiptModal?.getAttribute("aria-hidden") === "false") {
+      closeReceipt();
+    }
   });
 
   cartItems?.addEventListener("click", (event) => {
@@ -219,5 +364,6 @@
   });
 
   addBuyButtons();
+  syncPaymentDetails();
   renderCart();
 })();
