@@ -23,6 +23,15 @@
   const qrTitle = document.querySelector("#qr-modal-title");
   const qrImage = document.querySelector("#qr-modal-image");
   const qrCloseButtons = document.querySelectorAll("[data-qr-close]");
+  const productInfoModal = document.querySelector("[data-product-info-modal]");
+  const productInfoTitle = document.querySelector("#product-info-title");
+  const productInfoCategory = document.querySelector("#product-info-category");
+  const productInfoImage = document.querySelector("#product-info-image");
+  const productInfoPrice = document.querySelector("#product-info-price");
+  const productInfoDescription = document.querySelector("#product-info-description");
+  const productInfoDetails = document.querySelector("#product-info-details");
+  const productInfoConsult = document.querySelector("#product-info-consult");
+  const productInfoCloseButtons = document.querySelectorAll("[data-product-info-close]");
 
   if (!cartButton || !cartDrawer || !cartItems || !cartCount || !checkoutButton || !clearButton) {
     return;
@@ -47,9 +56,75 @@
     return card.querySelector("h3")?.textContent.trim() || "Producto";
   }
 
+  function priceFromText(value) {
+    const price = Number(String(value || "").replace(/[^\d.]/g, ""));
+    return Number.isFinite(price) ? price : 0;
+  }
+
+  function productPriceFrom(card) {
+    return priceFromText(card.querySelector(".price-badge")?.textContent);
+  }
+
+  function formatMoney(value) {
+    return `S/ ${Number(value || 0).toFixed(2)}`;
+  }
+
+  function lineSubtotal(item) {
+    return Number(item.price || 0) * Number(item.quantity || 0);
+  }
+
+  function cartSubtotal() {
+    return cart.reduce((sum, item) => sum + lineSubtotal(item), 0);
+  }
+
+  function normalizeCartPrices() {
+    const cards = [...document.querySelectorAll(".product-card")];
+    const romPrice = priceFromText(document.querySelector(".phone-rom-panel .price-badge")?.textContent);
+    cart = cart.map((item) => {
+      if (Number(item.price) > 0) return item;
+      if (item.name === "ROM y flasheo de celulares Android") {
+        return { ...item, price: romPrice };
+      }
+      const card = cards.find((entry) => productNameFrom(entry) === item.name);
+      return { ...item, price: card ? productPriceFrom(card) : Number(item.price || 0) };
+    });
+    saveCart();
+  }
+
   function productCategoryFrom(card) {
     const block = card.closest(".catalog-block");
     return block?.querySelector(".catalog-heading h3")?.textContent.trim() || "Catálogo";
+  }
+
+  function productInfoFrom(card) {
+    const details = [...card.querySelectorAll(".product-details li")].map((item) => item.textContent.trim());
+    return {
+      name: productNameFrom(card),
+      category: productCategoryFrom(card),
+      image: card.querySelector(".product-thumb-img")?.getAttribute("src") || "",
+      imageAlt: card.querySelector(".product-thumb-img")?.getAttribute("alt") || "",
+      price: card.querySelector(".price-badge")?.textContent.trim() || formatMoney(productPriceFrom(card)),
+      description: card.querySelector(":scope > p")?.textContent.trim() || "Consulta disponibilidad, compatibilidad e instalacion antes de comprar.",
+      details,
+      consultHref: card.querySelector("a")?.href || `https://wa.me/${WHATSAPP_NUMBER}`,
+    };
+  }
+
+  function addProductInfoButtons() {
+    document.querySelectorAll(".product-card").forEach((card) => {
+      if (card.querySelector(".product-info-button")) return;
+      const button = document.createElement("button");
+      button.className = "product-info-button";
+      button.type = "button";
+      button.textContent = "Ver info";
+      button.addEventListener("click", () => openProductInfo(card));
+      const consultLink = card.querySelector("a");
+      if (consultLink) {
+        consultLink.before(button);
+      } else {
+        card.appendChild(button);
+      }
+    });
   }
 
   function addBuyButtons() {
@@ -58,16 +133,18 @@
 
       const name = productNameFrom(card);
       const category = productCategoryFrom(card);
+      const price = productPriceFrom(card);
       const button = document.createElement("button");
       button.className = "buy-button";
       button.type = "button";
       button.textContent = "Comprar";
-      button.addEventListener("click", () => addToCart({ name, category }));
+      button.addEventListener("click", () => addToCart({ name, category, price }));
       card.appendChild(button);
     });
 
     const romPanel = document.querySelector(".phone-rom-panel");
     if (romPanel && !romPanel.querySelector(".buy-button")) {
+      const price = priceFromText(romPanel.querySelector(".price-badge")?.textContent);
       const button = document.createElement("button");
       button.className = "buy-button";
       button.type = "button";
@@ -75,6 +152,7 @@
       button.addEventListener("click", () =>
         addToCart({
           name: "ROM y flasheo de celulares Android",
+          price,
           category: "Servicio técnico Android",
         })
       );
@@ -125,24 +203,42 @@
     }
 
     checkoutButton.disabled = false;
-    cartItems.innerHTML = cart
-      .map(
-        (item) => `
+    const itemsHtml = cart
+      .map((item) => {
+        const name = escapeHtml(item.name);
+        return `
           <article class="cart-item">
-            <div>
-              <strong>${escapeHtml(item.name)}</strong>
-              <span>${escapeHtml(item.category)}</span>
+            <div class="cart-item-main">
+              <div>
+                <strong>${name}</strong>
+                <span>${escapeHtml(item.category)}</span>
+              </div>
+              <div class="cart-item-price">
+                <span>Precio</span>
+                <strong>${formatMoney(item.price)}</strong>
+              </div>
             </div>
             <div class="cart-qty">
-              <button type="button" data-action="decrease" data-name="${escapeHtml(item.name)}">−</button>
+              <button type="button" data-action="decrease" data-name="${name}">-</button>
               <span>${item.quantity}</span>
-              <button type="button" data-action="increase" data-name="${escapeHtml(item.name)}">+</button>
-              <button type="button" data-action="remove" data-name="${escapeHtml(item.name)}">Quitar</button>
+              <button type="button" data-action="increase" data-name="${name}">+</button>
+              <button type="button" data-action="remove" data-name="${name}">Quitar</button>
+            </div>
+            <div class="cart-line-total">
+              <span>Subtotal</span>
+              <strong>${formatMoney(lineSubtotal(item))}</strong>
             </div>
           </article>
-        `
-      )
+        `;
+      })
       .join("");
+
+    cartItems.innerHTML = `${itemsHtml}
+      <section class="cart-summary" aria-label="Resumen del carrito">
+        <div><span>Productos seleccionados</span><strong>${total}</strong></div>
+        <div><span>Total a pagar</span><strong>${formatMoney(cartSubtotal())}</strong></div>
+      </section>
+    `;
   }
 
   function escapeHtml(value) {
@@ -267,10 +363,13 @@
       name: item.name,
       category: item.category,
       quantity: item.quantity,
+      price: Number(item.price || 0),
+      subtotal: lineSubtotal(item),
     }));
   }
 
   function buildReceipt(data, number) {
+    const total = cartSubtotal();
     const rows = orderLines()
       .map(
         (item) => `
@@ -278,6 +377,8 @@
             <td class="receipt-index">${item.index}</td>
             <td><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.category)}</span></td>
             <td class="receipt-qty">${item.quantity}</td>
+            <td class="receipt-money">${formatMoney(item.price)}</td>
+            <td class="receipt-money">${formatMoney(item.subtotal)}</td>
           </tr>
         `
       )
@@ -316,13 +417,13 @@
         </section>
 
         <table class="receipt-table">
-          <thead><tr><th>#</th><th>Producto / servicio</th><th>Cant.</th></tr></thead>
+          <thead><tr><th>#</th><th>Producto / servicio</th><th>Cant.</th><th>P. unit.</th><th>Subtotal</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
 
         <section class="receipt-total">
           <span>Total</span>
-          <strong>Por confirmar</strong>
+          <strong>${formatMoney(total)}</strong>
         </section>
 
         <footer class="receipt-footer">
@@ -337,8 +438,9 @@
   }
 
   function buildWhatsappMessage(data, number) {
+    const total = cartSubtotal();
     const products = orderLines()
-      .map((item) => `${item.index}. ${item.name} x${item.quantity} (${item.category})`)
+      .map((item) => `${item.index}. ${item.name} x${item.quantity} - ${formatMoney(item.subtotal)} (${item.category})`)
       .join("\n");
 
     const paymentDetail =
@@ -356,6 +458,7 @@
       "",
       "Productos:",
       products,
+      `Total referencial: ${formatMoney(total)}`,
       "",
       `Forma de pago: ${data.payment}`,
       paymentDetail,
@@ -450,6 +553,32 @@
     document.body.classList.remove("modal-open");
   }
 
+  function openProductInfo(card) {
+    if (!productInfoModal || !productInfoTitle || !productInfoDetails) return;
+    const info = productInfoFrom(card);
+    productInfoTitle.textContent = info.name;
+    if (productInfoCategory) productInfoCategory.textContent = info.category;
+    if (productInfoPrice) productInfoPrice.textContent = info.price;
+    if (productInfoDescription) productInfoDescription.textContent = info.description;
+    if (productInfoImage) {
+      productInfoImage.src = info.image;
+      productInfoImage.alt = info.imageAlt || info.name;
+      productInfoImage.hidden = !info.image;
+    }
+    productInfoDetails.innerHTML = info.details.length
+      ? info.details.map((item) => `<li>${escapeHtml(item)}</li>`).join("")
+      : "<li>Asesoria previa para validar disponibilidad y compatibilidad.</li>";
+    if (productInfoConsult) productInfoConsult.href = info.consultHref;
+    productInfoModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    productInfoModal.querySelector(".product-info-close")?.focus();
+  }
+
+  function closeProductInfo() {
+    productInfoModal?.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  }
+
   cartButton?.addEventListener("click", openCart);
   cartClose?.addEventListener("click", closeCart);
   checkoutButton?.addEventListener("click", checkout);
@@ -467,6 +596,7 @@
     button.addEventListener("click", () => openQrModal(button));
   });
   qrCloseButtons.forEach((button) => button.addEventListener("click", closeQrModal));
+  productInfoCloseButtons.forEach((button) => button.addEventListener("click", closeProductInfo));
   document.querySelector('[data-payment-method="card"]')?.click();
   billingDocumentType?.addEventListener("change", syncBillingDocument);
   billingDocument?.addEventListener("input", syncBillingDocument);
@@ -491,6 +621,10 @@
   });
 
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && productInfoModal?.getAttribute("aria-hidden") === "false") {
+      closeProductInfo();
+      return;
+    }
     if (event.key === "Escape" && qrModal?.getAttribute("aria-hidden") === "false") {
       closeQrModal();
       return;
@@ -513,7 +647,9 @@
     if (button.dataset.action === "remove") removeFromCart(name);
   });
 
+  addProductInfoButtons();
   addBuyButtons();
+  normalizeCartPrices();
   syncPaymentDetails();
   renderCart();
 })();
