@@ -13,6 +13,81 @@
 
   if (!modal || !openButton) return;
 
+  function initMobileNavigation() {
+    const header = document.querySelector(".site-header");
+    const nav = header?.querySelector(".nav");
+    if (!header || !nav || header.querySelector(".mobile-menu-button")) return;
+
+    const requiredLinks = [
+      ["Venta", "productos.html"],
+      ["Streaming", "streaming.html"],
+      ["Asesoría", "servicios-profesionales.html"],
+      ["Servicios", "index.html#servicios"],
+      ["Proceso", "index.html#proceso"],
+      ["Contacto", "index.html#contacto"],
+    ];
+
+    nav.querySelectorAll("a").forEach((link) => link.remove());
+    requiredLinks.forEach(([label, href]) => {
+      const link = document.createElement("a");
+      link.href = href;
+      link.textContent = label;
+      nav.appendChild(link);
+    });
+
+    const actions = document.createElement("div");
+    actions.className = "header-actions";
+    const menuButton = document.createElement("button");
+    menuButton.className = "mobile-menu-button";
+    menuButton.type = "button";
+    menuButton.setAttribute("aria-label", "Abrir menú");
+    menuButton.setAttribute("aria-expanded", "false");
+    menuButton.innerHTML = "<span></span><span></span><span></span>";
+
+    openButton.classList.add("header-account-button");
+    actions.append(openButton, menuButton);
+    header.appendChild(actions);
+
+    const backdrop = document.createElement("button");
+    backdrop.className = "mobile-nav-backdrop";
+    backdrop.type = "button";
+    backdrop.setAttribute("aria-label", "Cerrar menú");
+    backdrop.hidden = true;
+    document.body.appendChild(backdrop);
+
+    function closeMenu() {
+      nav.classList.remove("is-open");
+      menuButton.classList.remove("is-open");
+      menuButton.setAttribute("aria-expanded", "false");
+      backdrop.hidden = true;
+      document.body.classList.remove("mobile-menu-open");
+    }
+
+    function openMenu() {
+      nav.classList.add("is-open");
+      menuButton.classList.add("is-open");
+      menuButton.setAttribute("aria-expanded", "true");
+      backdrop.hidden = false;
+      document.body.classList.add("mobile-menu-open");
+    }
+
+    menuButton.addEventListener("click", () => {
+      if (nav.classList.contains("is-open")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    backdrop.addEventListener("click", closeMenu);
+    nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && nav.classList.contains("is-open")) closeMenu();
+    });
+  }
+
+  initMobileNavigation();
+
   function loadAccount() {
     try {
       return JSON.parse(localStorage.getItem(STORAGE_KEY));

@@ -313,6 +313,17 @@ a {
   fill: currentColor;
 }
 
+.header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-menu-button,
+.mobile-nav-backdrop {
+  display: none;
+}
+
 .account-modal {
   position: fixed;
   inset: 0;
@@ -3137,7 +3148,8 @@ h1 {
 }
 
 .product-card > p,
-.product-card > .product-details {
+.product-card > .product-details,
+.product-card > a {
   display: none;
 }
 
@@ -3177,6 +3189,15 @@ h1 {
   border-radius: 8px;
   background: linear-gradient(135deg, #0554dc, var(--cyan));
   font-weight: 900;
+}
+
+.product-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
 }
 
 .product-info-button,
@@ -3407,6 +3428,22 @@ h1 {
   background: linear-gradient(135deg, #64748b, #0ea5e9);
 }
 
+.streaming-category-icon {
+  background: linear-gradient(135deg, #e50914, #111827);
+}
+
+.anime-category-icon {
+  background: linear-gradient(135deg, #f97316, #7c3aed);
+}
+
+.sports-category-icon {
+  background: linear-gradient(135deg, #16a34a, #0554dc);
+}
+
+.free-category-icon {
+  background: linear-gradient(135deg, #0f766e, #22c55e);
+}
+
 .os-grid {
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 }
@@ -3439,6 +3476,24 @@ h1 {
 
 .security-version-card .product-details {
   font-size: 0.86rem;
+}
+
+.streaming-grid {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.streaming-card {
+  min-height: 0;
+  padding: 22px;
+}
+
+.streaming-logo-img {
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  padding: 28px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(0, 212, 255, 0.1), transparent 36%),
+    linear-gradient(135deg, #071526, #0f172a);
 }
 
 .product-card {
@@ -4600,9 +4655,10 @@ h1 {
 
   .site-header {
     position: sticky;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 14px 18px;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 14px;
+    gap: 12px;
   }
 
   .brand-logo-wrap {
@@ -4628,20 +4684,37 @@ h1 {
   }
 
   .nav {
-    width: 100%;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    font-size: 0.88rem;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 62;
+    display: grid;
+    align-content: start;
+    width: min(82vw, 320px);
+    height: 100vh;
+    padding: 86px 18px 24px;
+    gap: 10px;
+    color: var(--navy);
+    overflow-y: auto;
     border: 0;
+    border-left: 1px solid rgba(184, 220, 255, 0.85);
     border-radius: 0;
-    background: transparent;
-    scrollbar-width: none;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(0, 212, 255, 0.12), transparent 32%),
+      #ffffff;
+    box-shadow: -24px 0 70px rgba(2, 11, 28, 0.24);
+    transform: translateX(104%);
+    transition: transform 220ms ease;
   }
 
-  .nav {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
+  .nav.is-open {
+    transform: translateX(0);
+  }
+
+  .header-actions {
+    margin-left: auto;
+    position: relative;
+    z-index: 64;
   }
 
   .account-nav-button {
@@ -4654,20 +4727,70 @@ h1 {
     display: none;
   }
 
+  .mobile-menu-button {
+    display: inline-grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    gap: 4px;
+    padding: 9px;
+    border: 1px solid rgba(184, 220, 255, 0.95);
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 12px 26px rgba(4, 22, 45, 0.1);
+    cursor: pointer;
+  }
+
+  .mobile-menu-button span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--navy);
+    transition: transform 180ms ease, opacity 180ms ease;
+  }
+
+  .mobile-menu-button.is-open span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .mobile-menu-button.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-button.is-open span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .mobile-nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 61;
+    display: block;
+    border: 0;
+    background: rgba(2, 11, 28, 0.55);
+    backdrop-filter: blur(4px);
+  }
+
+  .mobile-nav-backdrop[hidden] {
+    display: none;
+  }
+
+  body.mobile-menu-open {
+    overflow: hidden;
+  }
+
   .account-tabs {
     grid-template-columns: 1fr;
   }
 
-  .nav::-webkit-scrollbar {
-    display: none;
-  }
-
   .nav a {
-    flex: 0 0 auto;
-    padding: 8px 10px;
+    width: 100%;
+    padding: 13px 14px;
     border: 1px solid rgba(9, 105, 255, 0.18);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
   }
 
   .nav a::after {

@@ -113,17 +113,15 @@
   function addProductInfoButtons() {
     document.querySelectorAll(".product-card").forEach((card) => {
       if (card.querySelector(".product-info-button")) return;
+      const actions = document.createElement("div");
+      actions.className = "product-card-actions";
       const button = document.createElement("button");
       button.className = "product-info-button";
       button.type = "button";
       button.textContent = "Ver info";
       button.addEventListener("click", () => openProductInfo(card));
-      const consultLink = card.querySelector("a");
-      if (consultLink) {
-        consultLink.before(button);
-      } else {
-        card.appendChild(button);
-      }
+      actions.appendChild(button);
+      card.appendChild(actions);
     });
   }
 
@@ -139,7 +137,8 @@
       button.type = "button";
       button.textContent = "Comprar";
       button.addEventListener("click", () => addToCart({ name, category, price }));
-      card.appendChild(button);
+      const actions = card.querySelector(".product-card-actions") || card;
+      actions.appendChild(button);
     });
 
     const romPanel = document.querySelector(".phone-rom-panel");
@@ -170,7 +169,6 @@
     saveCart();
     renderCart();
     showToast(`${product.name} agregado al carrito`);
-    openCart();
   }
 
   function removeFromCart(name) {
