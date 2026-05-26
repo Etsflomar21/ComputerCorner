@@ -56,7 +56,7 @@
         </div>
       </div>
       <dl>
-        <div><dt>Documento</dt><dd>${escapeHtml(account.document || "No registrado")}</dd></div>
+        <div><dt>Documento</dt><dd>${escapeHtml(`${account.documentType || "DNI"} ${account.document || "No registrado"}`)}</dd></div>
         <div><dt>Teléfono</dt><dd>${escapeHtml(account.phone || "No registrado")}</dd></div>
       </dl>
     `;
@@ -74,6 +74,62 @@
 
   function formValue(form, name) {
     return form.querySelector(`[name="${name}"]`)?.value.trim() || "";
+  }
+
+  function onlyDigits(input, maxLength) {
+    input.value = input.value.replace(/\D/g, "").slice(0, maxLength);
+  }
+
+  function expectedDocumentLength(type) {
+    return type === "RUC" ? 11 : 8;
+  }
+
+  function syncDocumentField(form) {
+    const type = form.querySelector("[data-document-type]")?.value || "DNI";
+    const documentInput = form.querySelector("[data-document-number]");
+    if (!documentInput) return;
+
+    const length = expectedDocumentLength(type);
+    documentInput.maxLength = length;
+    documentInput.placeholder = `${length} dígitos`;
+    onlyDigits(documentInput, length);
+  }
+
+  function setupValidation(form) {
+    if (!form) return;
+
+    const documentType = form.querySelector("[data-document-type]");
+    const documentInput = form.querySelector("[data-document-number]");
+    const phoneInput = form.querySelector("[data-phone-number]");
+
+    documentType?.addEventListener("change", () => syncDocumentField(form));
+    documentInput?.addEventListener("input", () => syncDocumentField(form));
+    phoneInput?.addEventListener("input", () => onlyDigits(phoneInput, 9));
+    syncDocumentField(form);
+  }
+
+  function validateRegisterForm(form) {
+    const documentType = formValue(form, "documentType") || "DNI";
+    const documentInput = form.querySelector("[data-document-number]");
+    const phoneInput = form.querySelector("[data-phone-number]");
+    const documentLength = expectedDocumentLength(documentType);
+
+    documentInput?.setCustomValidity("");
+    phoneInput?.setCustomValidity("");
+
+    if (documentInput && documentInput.value.length !== documentLength) {
+      documentInput.setCustomValidity(`${documentType} debe tener ${documentLength} dígitos numéricos.`);
+      documentInput.reportValidity();
+      return false;
+    }
+
+    if (phoneInput && phoneInput.value.length !== 9) {
+      phoneInput.setCustomValidity("El número celular debe tener 9 dígitos.");
+      phoneInput.reportValidity();
+      return false;
+    }
+
+    return true;
   }
 
   function openModal() {
@@ -97,11 +153,14 @@
 
   registerForm?.addEventListener("submit", (event) => {
     event.preventDefault();
+    if (!validateRegisterForm(registerForm)) return;
     const account = {
       name: formValue(registerForm, "name"),
+      documentType: formValue(registerForm, "documentType") || "DNI",
       document: formValue(registerForm, "document"),
       email: formValue(registerForm, "email"),
-      phone: formValue(registerForm, "phone"),
+      countryCode: formValue(registerForm, "countryCode") || "+51",
+      phone: `${formValue(registerForm, "countryCode") || "+51"} ${formValue(registerForm, "phone")}`,
     };
     saveAccount(account);
     registerForm.reset();
@@ -137,5 +196,6 @@
     }
   });
 
+  setupValidation(registerForm);
   renderProfile();
 })();

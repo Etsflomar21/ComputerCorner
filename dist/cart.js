@@ -15,6 +15,10 @@
   const printReceipt = document.querySelector("#print-receipt");
   const closeReceiptButtons = document.querySelectorAll("[data-close-receipt]");
   const paymentDetails = document.querySelectorAll("[data-payment-detail]");
+  const billingDocumentType = document.querySelector("#billing-document-type");
+  const billingDocument = document.querySelector("#billing-document");
+  const billingName = document.querySelector("#billing-name");
+  const billingEmail = document.querySelector("#billing-email");
 
   if (!cartButton || !cartDrawer || !cartItems || !cartCount || !checkoutButton || !clearButton) {
     return;
@@ -158,21 +162,99 @@
     return document.querySelector(selector)?.value.trim() || fallback;
   }
 
+  function onlyDigits(input, maxLength) {
+    input.value = input.value.replace(/\D/g, "").slice(0, maxLength);
+  }
+
+  function expectedDocumentLength(type) {
+    return type === "RUC" ? 11 : 8;
+  }
+
+  function syncBillingDocument() {
+    if (!billingDocument) return;
+    const type = billingDocumentType?.value || "DNI";
+    const length = expectedDocumentLength(type);
+    billingDocument.maxLength = length;
+    billingDocument.placeholder = `${length} dígitos`;
+    onlyDigits(billingDocument, length);
+  }
+
   function receiptNumber() {
     const date = new Date();
     return `CC-${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}-${String(date.getHours()).padStart(2, "0")}${String(date.getMinutes()).padStart(2, "0")}`;
   }
 
   function billingData() {
+    const paymentType = selectedPaymentType();
+    const transferPrefix = paymentType === "plin" ? "plin" : "yape";
+    const transferOperation = fieldValue(`#${transferPrefix}-operation`, "Pendiente");
+    const transferPhone = `${fieldValue(`#${transferPrefix}-country-code`, "+51")} ${fieldValue(`#${transferPrefix}-phone`, "Pendiente")}`;
+
     return {
       name: fieldValue("#billing-name"),
+      documentType: fieldValue("#billing-document-type", "DNI"),
       document: fieldValue("#billing-document"),
       email: fieldValue("#billing-email"),
       payment: selectedPayment(),
-      paymentType: selectedPaymentType(),
-      yapeOperation: fieldValue("#yape-operation", "Pendiente"),
-      yapePhone: fieldValue("#yape-phone", "Pendiente"),
+      paymentType,
+      transferOperation,
+      transferPhone,
     };
+  }
+
+  function warn(message, input) {
+    showToast(message);
+    if (input) {
+      input.setCustomValidity(message);
+      input.reportValidity();
+      input.addEventListener("input", () => input.setCustomValidity(""), { once: true });
+    }
+  }
+
+  function validateBillingData() {
+    const data = billingData();
+    const documentLength = expectedDocumentLength(data.documentType);
+    const transferPrefix = data.paymentType === "plin" ? "plin" : "yape";
+    const operationInput = document.querySelector(`#${transferPrefix}-operation`);
+    const phoneInput = document.querySelector(`#${transferPrefix}-phone`);
+
+    billingName?.setCustomValidity("");
+    billingDocument?.setCustomValidity("");
+    billingEmail?.setCustomValidity("");
+    operationInput?.setCustomValidity("");
+    phoneInput?.setCustomValidity("");
+
+    if (billingName && !billingName.value.trim()) {
+      warn("Debes ingresar el nombre completo o razón social.", billingName);
+      return false;
+    }
+
+    if (billingDocument && billingDocument.value.length !== documentLength) {
+      warn(`${data.documentType} debe tener ${documentLength} dígitos numéricos.`, billingDocument);
+      return false;
+    }
+
+    if (billingEmail && !billingEmail.value.trim()) {
+      warn("Debes ingresar un correo para la boleta.", billingEmail);
+      return false;
+    }
+
+    if (billingEmail && !billingEmail.checkValidity()) {
+      warn("Debes ingresar un correo válido.", billingEmail);
+      return false;
+    }
+
+    if ((data.paymentType === "yape" || data.paymentType === "plin") && operationInput && !operationInput.value.trim()) {
+      warn(`Debes ingresar el número de operación de ${data.paymentType === "plin" ? "Plin" : "Yape"}.`, operationInput);
+      return false;
+    }
+
+    if ((data.paymentType === "yape" || data.paymentType === "plin") && phoneInput && phoneInput.value.length !== 9) {
+      warn(`El celular usado en ${data.paymentType === "plin" ? "Plin" : "Yape"} debe tener 9 dígitos.`, phoneInput);
+      return false;
+    }
+
+    return true;
   }
 
   function orderLines() {
@@ -189,41 +271,64 @@
       .map(
         (item) => `
           <tr>
-            <td>${item.index}</td>
+            <td class="receipt-index">${item.index}</td>
             <td><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.category)}</span></td>
-            <td>${item.quantity}</td>
-            <td>Por confirmar</td>
+            <td class="receipt-qty">${item.quantity}</td>
           </tr>
         `
       )
       .join("");
 
-    const paymentMeta =
-      data.paymentType === "yape"
-        ? `<p><strong>Operación Yape:</strong> ${escapeHtml(data.yapeOperation)}</p><p><strong>Celular Yape:</strong> ${escapeHtml(data.yapePhone)}</p>`
-        : `<p><strong>Pasarela:</strong> Link seguro pendiente de generación.</p>`;
-
     return `
-      <div class="receipt-head">
-        <div>
-          <p class="section-kicker">Pre-boleta de venta</p>
-          <h2 id="receipt-title">Pedido ${escapeHtml(number)}</h2>
-          <p>Documento preliminar. La boleta oficial se emite al confirmar disponibilidad y pago.</p>
-        </div>
-        <strong>Computer Corner</strong>
-      </div>
-      <div class="receipt-meta">
-        <p><strong>Cliente:</strong> ${escapeHtml(data.name)}</p>
-        <p><strong>DNI/RUC:</strong> ${escapeHtml(data.document)}</p>
-        <p><strong>Correo:</strong> ${escapeHtml(data.email)}</p>
-        <p><strong>Pago:</strong> ${escapeHtml(data.payment)}</p>
-        ${paymentMeta}
-      </div>
-      <table class="receipt-table">
-        <thead><tr><th>#</th><th>Producto</th><th>Cant.</th><th>Importe</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-      <div class="receipt-total"><span>Total</span><strong>Por confirmar</strong></div>
+      <article class="receipt-document">
+        <header class="receipt-head">
+          <div class="receipt-brand-block">
+            <img src="assets/computer-corner-logo.png" alt="Logo de Computer Corner">
+            <div>
+              <strong>Computer Corner</strong>
+              <span>Venta digital y soporte tecnológico</span>
+            </div>
+          </div>
+          <div class="receipt-number-box">
+            <span>PRE-BOLETA</span>
+            <strong id="receipt-title">${escapeHtml(number)}</strong>
+          </div>
+        </header>
+
+        <section class="receipt-note">
+          Documento preliminar. La boleta oficial se emite al confirmar disponibilidad, importe final y pago.
+        </section>
+
+        <section class="receipt-meta">
+          <div><span>Cliente</span><strong>${escapeHtml(data.name)}</strong></div>
+          <div><span>${escapeHtml(data.documentType)}</span><strong>${escapeHtml(data.document)}</strong></div>
+          <div><span>Correo</span><strong>${escapeHtml(data.email)}</strong></div>
+          <div><span>Pago</span><strong>${escapeHtml(data.payment)}</strong></div>
+          ${
+            data.paymentType === "yape" || data.paymentType === "plin"
+              ? `<div><span>Operación</span><strong>${escapeHtml(data.transferOperation)}</strong></div><div><span>Celular</span><strong>${escapeHtml(data.transferPhone)}</strong></div>`
+              : `<div class="receipt-meta-wide"><span>Pasarela</span><strong>Link seguro pendiente de generación</strong></div>`
+          }
+        </section>
+
+        <table class="receipt-table">
+          <thead><tr><th>#</th><th>Producto / servicio</th><th>Cant.</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+
+        <section class="receipt-total">
+          <span>Total</span>
+          <strong>Por confirmar</strong>
+        </section>
+
+        <footer class="receipt-footer">
+          <div>
+            <strong>Computer Corner</strong>
+            <span>WhatsApp: +51 918 260 798 · computer-corner@outlook.com</span>
+          </div>
+          <p>Patrocinado por ING. Etsflomar21</p>
+        </footer>
+      </article>
     `;
   }
 
@@ -233,8 +338,8 @@
       .join("\n");
 
     const paymentDetail =
-      data.paymentType === "yape"
-        ? `Operación Yape: ${data.yapeOperation}\nCelular Yape: ${data.yapePhone}`
+      data.paymentType === "yape" || data.paymentType === "plin"
+        ? `Operación ${data.paymentType === "plin" ? "Plin" : "Yape"}: ${data.transferOperation}\nCelular ${data.paymentType === "plin" ? "Plin" : "Yape"}: ${data.transferPhone}`
         : "Solicito link de pasarela segura para pagar con tarjeta.";
 
     return [
@@ -242,7 +347,7 @@
       "",
       "Datos para boleta:",
       `Cliente: ${data.name}`,
-      `DNI/RUC: ${data.document}`,
+      `${data.documentType}: ${data.document}`,
       `Correo: ${data.email}`,
       "",
       "Productos:",
@@ -278,6 +383,7 @@
 
   function checkout() {
     if (!cart.length) return;
+    if (!validateBillingData()) return;
     const data = billingData();
     const number = receiptNumber();
     openReceipt(data, number);
@@ -331,6 +437,15 @@
   printReceipt?.addEventListener("click", () => window.print());
   closeReceiptButtons.forEach((button) => button.addEventListener("click", closeReceipt));
   document.querySelector('[data-payment-method="card"]')?.click();
+  billingDocumentType?.addEventListener("change", syncBillingDocument);
+  billingDocument?.addEventListener("input", syncBillingDocument);
+  document.querySelectorAll("[data-phone-number]").forEach((input) => {
+    input.addEventListener("input", () => onlyDigits(input, 9));
+  });
+  document.querySelectorAll("[data-operation-number]").forEach((input) => {
+    input.addEventListener("input", () => onlyDigits(input, 20));
+  });
+  syncBillingDocument();
   document.querySelectorAll('input[name="payment"]').forEach((input) => {
     input.addEventListener("change", syncPaymentDetails);
   });

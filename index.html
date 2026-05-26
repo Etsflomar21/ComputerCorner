@@ -198,9 +198,29 @@
       </form>
       <form class="account-panel account-form" data-account-panel="register" data-register-form hidden>
         <label>Nombre completo<input type="text" name="name" placeholder="Tu nombre" required></label>
-        <label>DNI o RUC<input type="text" name="document" placeholder="Documento"></label>
+        <div class="form-row">
+          <label>Tipo de documento
+            <select name="documentType" data-document-type>
+              <option value="DNI">DNI</option>
+              <option value="RUC">RUC</option>
+            </select>
+          </label>
+          <label>Número de documento<input type="text" name="document" inputmode="numeric" maxlength="8" placeholder="8 dígitos" data-document-number required></label>
+        </div>
         <label>Correo<input type="email" name="email" placeholder="correo@ejemplo.com" required></label>
-        <label>Teléfono<input type="tel" name="phone" placeholder="Número de contacto"></label>
+        <div class="form-row phone-row">
+          <label>Código país
+            <select name="countryCode" data-country-code>
+              <option value="+51">+51 Perú</option>
+              <option value="+57">+57 Colombia</option>
+              <option value="+56">+56 Chile</option>
+              <option value="+54">+54 Argentina</option>
+              <option value="+52">+52 México</option>
+              <option value="+1">+1 EE. UU.</option>
+            </select>
+          </label>
+          <label>Número celular<input type="tel" name="phone" inputmode="numeric" maxlength="9" placeholder="9 dígitos" data-phone-number required></label>
+        </div>
         <button class="button primary" type="submit">Crear cuenta</button>
       </form>
     </section>
