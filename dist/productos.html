@@ -445,6 +445,7 @@
             <div>
               <strong>Pago con Yape</strong>
               <small>Escanea el QR, realiza el pago y escribe el número de operación para continuar.</small>
+              <button class="qr-view-button" type="button" data-qr-open data-qr-title="QR de pago Yape" data-qr-src="assets/img/pagos/yape-qr.jpeg">Ver QR</button>
             </div>
           </div>
           <label>
@@ -469,10 +470,11 @@
 
         <div class="payment-detail payment-detail-yape" data-payment-detail="plin" hidden>
           <div class="payment-qr-card">
-            <img src="assets/img/pagos/plin-qr.svg" alt="QR de pago Plin">
+            <img src="assets/img/pagos/plin-qr.jpeg" alt="QR de pago Plin">
             <div>
               <strong>Pago con Plin</strong>
               <small>Escanea el QR, realiza el pago y escribe el número de operación para continuar.</small>
+              <button class="qr-view-button" type="button" data-qr-open data-qr-title="QR de pago Plin" data-qr-src="assets/img/pagos/plin-qr.jpeg">Ver QR</button>
             </div>
           </div>
           <label>
@@ -563,6 +565,17 @@
         <button class="button secondary receipt-download-button" type="button" id="print-receipt">Descargar PDF</button>
         <a class="button primary" id="send-order" href="#" target="_blank" rel="noreferrer">Enviar por WhatsApp</a>
       </div>
+    </section>
+  </div>
+
+  <div class="qr-modal" data-qr-modal aria-hidden="true">
+    <div class="qr-backdrop" data-qr-close></div>
+    <section class="qr-card" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+      <button class="qr-close" type="button" data-qr-close aria-label="Cerrar QR">×</button>
+      <p class="section-kicker">Escanear pago</p>
+      <h2 id="qr-modal-title">QR de pago</h2>
+      <img id="qr-modal-image" src="" alt="QR de pago ampliado">
+      <p>Escanea el código, realiza el pago y luego escribe el número de operación en el formulario.</p>
     </section>
   </div>
 

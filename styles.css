@@ -2071,6 +2071,27 @@ h1 {
   line-height: 1.45;
 }
 
+.qr-view-button {
+  width: fit-content;
+  margin-top: 10px;
+  padding: 8px 12px;
+  color: #ffffff;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0554dc, var(--cyan));
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 12px 26px rgba(9, 105, 255, 0.2);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.qr-view-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(9, 105, 255, 0.28);
+}
+
 .payment-methods {
   display: grid;
   gap: 10px;
@@ -2213,6 +2234,97 @@ h1 {
     radial-gradient(circle at 100% 0%, rgba(0, 212, 255, 0.12), transparent 28%),
     #ffffff;
   box-shadow: 0 34px 100px rgba(0, 0, 0, 0.32);
+}
+
+.qr-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 200ms ease, visibility 200ms ease;
+}
+
+.qr-modal[aria-hidden="false"] {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.qr-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 11, 28, 0.74);
+  backdrop-filter: blur(10px);
+}
+
+.qr-card {
+  position: relative;
+  z-index: 1;
+  width: min(440px, 100%);
+  padding: clamp(20px, 4vw, 30px);
+  border: 1px solid rgba(184, 220, 255, 0.72);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(0, 212, 255, 0.12), transparent 30%),
+    #ffffff;
+  box-shadow: 0 34px 100px rgba(0, 0, 0, 0.32);
+  text-align: center;
+  transform: translateY(14px) scale(0.98);
+  transition: transform 200ms ease;
+}
+
+.qr-modal[aria-hidden="false"] .qr-card {
+  transform: translateY(0) scale(1);
+}
+
+.qr-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: var(--navy);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.qr-card h2 {
+  margin-bottom: 14px;
+  color: var(--navy);
+  font-size: clamp(1.45rem, 3vw, 2rem);
+}
+
+.qr-card img {
+  display: block;
+  width: min(100%, 320px);
+  max-height: 64vh;
+  margin: 0 auto 14px;
+  object-fit: contain;
+  border: 1px solid rgba(184, 220, 255, 0.9);
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 18px 42px rgba(4, 22, 45, 0.12);
+}
+
+.qr-card p:not(.section-kicker) {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.55;
 }
 
 .receipt-close {
@@ -2808,14 +2920,23 @@ h1 {
 
 .product-badge {
   display: grid;
-  width: 54px;
-  height: 54px;
+  min-width: 64px;
+  width: fit-content;
+  min-height: 44px;
   place-items: center;
+  padding: 8px 10px;
   color: #ffffff;
   border-radius: 8px;
   background: linear-gradient(135deg, #0554dc, var(--cyan));
   font-size: 0.82rem;
   font-weight: 900;
+}
+
+.price-badge {
+  align-self: start;
+  background: linear-gradient(135deg, #ff8a00, #0554dc, var(--cyan));
+  box-shadow: 0 12px 28px rgba(9, 105, 255, 0.22);
+  white-space: nowrap;
 }
 
 .product-card h3 {

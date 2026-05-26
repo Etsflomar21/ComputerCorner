@@ -19,6 +19,10 @@
   const billingDocument = document.querySelector("#billing-document");
   const billingName = document.querySelector("#billing-name");
   const billingEmail = document.querySelector("#billing-email");
+  const qrModal = document.querySelector("[data-qr-modal]");
+  const qrTitle = document.querySelector("#qr-modal-title");
+  const qrImage = document.querySelector("#qr-modal-image");
+  const qrCloseButtons = document.querySelectorAll("[data-qr-close]");
 
   if (!cartButton || !cartDrawer || !cartItems || !cartCount || !checkoutButton || !clearButton) {
     return;
@@ -431,6 +435,21 @@
     }, 2200);
   }
 
+  function openQrModal(button) {
+    if (!qrModal || !qrTitle || !qrImage) return;
+    qrTitle.textContent = button.dataset.qrTitle || "QR de pago";
+    qrImage.src = button.dataset.qrSrc || "";
+    qrImage.alt = `${qrTitle.textContent} ampliado`;
+    qrModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    qrModal.querySelector(".qr-close")?.focus();
+  }
+
+  function closeQrModal() {
+    qrModal?.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  }
+
   cartButton?.addEventListener("click", openCart);
   cartClose?.addEventListener("click", closeCart);
   checkoutButton?.addEventListener("click", checkout);
@@ -444,6 +463,10 @@
     }
   });
   closeReceiptButtons.forEach((button) => button.addEventListener("click", closeReceipt));
+  document.querySelectorAll("[data-qr-open]").forEach((button) => {
+    button.addEventListener("click", () => openQrModal(button));
+  });
+  qrCloseButtons.forEach((button) => button.addEventListener("click", closeQrModal));
   document.querySelector('[data-payment-method="card"]')?.click();
   billingDocumentType?.addEventListener("change", syncBillingDocument);
   billingDocument?.addEventListener("input", syncBillingDocument);
@@ -468,6 +491,10 @@
   });
 
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && qrModal?.getAttribute("aria-hidden") === "false") {
+      closeQrModal();
+      return;
+    }
     if (event.key === "Escape" && cartDrawer.getAttribute("aria-hidden") === "false") {
       closeCart();
     }
