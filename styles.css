@@ -4019,6 +4019,91 @@ h1 {
   transform: rotate(90deg);
 }
 
+.account-close,
+.contact-modal-close,
+.service-detail-close,
+.receipt-close,
+.qr-close,
+.product-info-close,
+.cart-close,
+.support-chat-header button {
+  --close-line: var(--navy);
+  --close-bg: rgba(255, 255, 255, 0.82);
+  --close-border: rgba(184, 220, 255, 0.82);
+  position: absolute;
+  display: inline-flex;
+  min-width: 88px;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 14px;
+  color: var(--close-line);
+  border: 1px solid var(--close-border);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), var(--close-bg));
+  box-shadow: 0 14px 32px rgba(4, 22, 45, 0.14);
+  cursor: pointer;
+  font-size: 0;
+  line-height: 1;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.account-close::before,
+.contact-modal-close::before,
+.service-detail-close::before,
+.receipt-close::before,
+.qr-close::before,
+.product-info-close::before,
+.cart-close::before,
+.support-chat-header button::before {
+  content: "Cerrar";
+  color: var(--close-line);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+.account-close:hover,
+.contact-modal-close:hover,
+.service-detail-close:hover,
+.receipt-close:hover,
+.qr-close:hover,
+.product-info-close:hover,
+.cart-close:hover,
+.support-chat-header button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 212, 255, 0.44);
+  background: #ffffff;
+  box-shadow: 0 20px 44px rgba(4, 22, 45, 0.2);
+}
+
+.contact-modal-close,
+.support-chat-header button {
+  --close-line: #ffffff;
+  --close-bg: rgba(255, 255, 255, 0.1);
+  --close-border: rgba(255, 255, 255, 0.24);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+}
+
+.contact-modal-close:hover,
+.support-chat-header button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.42);
+}
+
+.cart-close,
+.support-chat-header button {
+  position: relative;
+  top: auto;
+  right: auto;
+  flex: 0 0 auto;
+}
+
 .service-detail-card .section-kicker {
   margin-bottom: 10px;
 }
@@ -4824,6 +4909,17 @@ h1 {
 
   .contact-modal-card .contact-actions {
     justify-content: stretch;
+  }
+
+  .account-close,
+  .contact-modal-close,
+  .service-detail-close,
+  .receipt-close,
+  .qr-close,
+  .product-info-close {
+    min-width: 78px;
+    min-height: 36px;
+    padding: 8px 12px;
   }
 
   .nav a {
