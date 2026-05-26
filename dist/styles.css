@@ -4661,6 +4661,10 @@ h1 {
     gap: 12px;
   }
 
+  body.mobile-menu-open .site-header {
+    z-index: 70;
+  }
+
   .brand-logo-wrap {
     width: 54px;
     height: 54px;
@@ -4771,7 +4775,7 @@ h1 {
   .mobile-nav-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 61;
+    z-index: 60;
     display: block;
     border: 0;
     background: rgba(2, 11, 28, 0.24);
