@@ -109,6 +109,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 body {
@@ -119,6 +121,7 @@ body {
   background:
     radial-gradient(circle at 12% 8%, rgba(0, 212, 255, 0.12), transparent 28%),
     linear-gradient(180deg, #ffffff 0%, var(--paper) 42%, #ffffff 100%);
+  overflow-x: hidden;
 }
 
 body {
@@ -3492,11 +3495,9 @@ h1 {
 
 .streaming-logo-img {
   aspect-ratio: 16 / 9;
-  object-fit: contain;
-  padding: 28px;
-  background:
-    radial-gradient(circle at 100% 0%, rgba(0, 212, 255, 0.1), transparent 36%),
-    linear-gradient(135deg, #071526, #0f172a);
+  object-fit: cover;
+  padding: 0;
+  background: #071526;
 }
 
 .product-card {

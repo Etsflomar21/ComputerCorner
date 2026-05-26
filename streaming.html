@@ -70,7 +70,7 @@
             sports: { summary: "Acceso deportivo sujeto a calendario, pais, temporada y disponibilidad del evento.", items: [["ESPN+", "Deportes en Vivo", 18, "espn", "ff0033"], ["DAZN", "Deportes en Vivo", 20, "dazn", "111111"], ["DGO", "TV en vivo, deportes y entretenimiento", 18, "directv", "00a6de"], ["Apple TV MLS Season Pass", "Apple TV - MLS Season Pass", 20, "appletv", "111111"]] },
             free: { summary: "Plataformas gratuitas, con publicidad o con plan premium opcional. Se asesora la mejor opcion para tu dispositivo.", items: [["Pluto TV", "Gratis con publicidad / FAST", 0, "plutotv", "111111"], ["Mercado Play", "Gratis con publicidad / FAST", 0, "mercadolibre", "fff159"], ["Rakuten TV", "Gratis con publicidad / FAST", 0, "rakuten", "bf0000"], ["ViX", "Plan gratuito y premium", 10, "v", "ff6900"]] }
           };
-          function iconUrl(slug, color) { return "https://cdn.simpleicons.org/" + slug + "/" + color; }
+          function iconUrl(slug, color) { return "assets/img/streaming/" + slug + ".png"; }
           function fallbackLogo(name, color) {
             var initials = name.split(/\s+/).slice(0, 2).map(function (word) { return word.charAt(0); }).join("").toUpperCase();
             var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><rect width="640" height="360" rx="32" fill="#' + color + '"/><circle cx="520" cy="78" r="86" fill="rgba(255,255,255,.18)"/><text x="50%" y="54%" text-anchor="middle" font-family="Arial, sans-serif" font-size="96" font-weight="800" fill="white">' + initials + '</text></svg>';
@@ -83,7 +83,7 @@
             var icon = item[3];
             var color = item[4] || "0554dc";
             var text = encodeURIComponent("Hola Computer Corner, quiero consultar por " + name + ".");
-            return '<article class="product-card streaming-card"><img class="product-thumb-img streaming-logo-img" src="' + iconUrl(icon, color) + '" alt="Logo de ' + name + '" onerror="this.onerror=null;this.src=\'' + fallbackLogo(name, color) + '\'"><span class="product-badge price-badge">S/ ' + price + '</span><h3>' + name + '</h3><p>' + group.summary + '</p><ul class="product-details"><li>' + detail + '</li><li>Entrega coordinada segun disponibilidad y tipo de acceso</li><li>Precio referencial sujeto a duracion, perfil o cuenta</li></ul><a href="https://wa.me/' + whatsapp + '?text=' + text + '" target="_blank" rel="noreferrer">Consultar</a></article>';
+            return '<article class="product-card streaming-card"><img class="product-thumb-img streaming-logo-img" src="' + iconUrl(icon, color) + '" alt="Imagen de catalogo de ' + name + '" onerror="this.onerror=null;this.src=\'' + fallbackLogo(name, color) + '\'"><span class="product-badge price-badge">S/ ' + price + '</span><h3>' + name + '</h3><p>' + group.summary + '</p><ul class="product-details"><li>' + detail + '</li><li>Entrega coordinada segun disponibilidad y tipo de acceso</li><li>Precio referencial sujeto a duracion, perfil o cuenta</li></ul><a href="https://wa.me/' + whatsapp + '?text=' + text + '" target="_blank" rel="noreferrer">Consultar</a></article>';
           }
           Object.entries(streamingProducts).forEach(function (entry) {
             var container = document.querySelector('[data-streaming-products="' + entry[0] + '"]');
