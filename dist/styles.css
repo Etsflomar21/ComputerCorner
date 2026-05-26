@@ -2459,6 +2459,18 @@ h1 {
   margin-top: 18px;
 }
 
+.receipt-send-note {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  color: #754000;
+  border: 1px solid rgba(255, 184, 77, 0.5);
+  border-radius: 8px;
+  background: #fff7e8;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
 .products-page {
   background:
     radial-gradient(circle at 10% 8%, rgba(0, 212, 255, 0.14), transparent 28%),
@@ -4403,6 +4415,7 @@ h1 {
 
   .receipt-close,
   .receipt-actions,
+  .receipt-send-note,
   .receipt-backdrop {
     display: none !important;
   }

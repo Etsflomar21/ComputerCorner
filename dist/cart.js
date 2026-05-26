@@ -435,6 +435,14 @@
   cartClose?.addEventListener("click", closeCart);
   checkoutButton?.addEventListener("click", checkout);
   printReceipt?.addEventListener("click", () => window.print());
+  sendOrder?.addEventListener("click", (event) => {
+    const proceed = window.confirm(
+      "Recomendación: antes de enviar por WhatsApp, guarda la pre-boleta como PDF y adjúntala manualmente en el chat. ¿Deseas continuar a WhatsApp?"
+    );
+    if (!proceed) {
+      event.preventDefault();
+    }
+  });
   closeReceiptButtons.forEach((button) => button.addEventListener("click", closeReceipt));
   document.querySelector('[data-payment-method="card"]')?.click();
   billingDocumentType?.addEventListener("change", syncBillingDocument);
