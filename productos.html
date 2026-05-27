@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/computer-corner-logo.png">
+  <link rel="apple-touch-icon" href="assets/computer-corner-logo.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="products-page">
@@ -489,14 +491,22 @@
             },
           };
 
+          const securityImageFor = (name) =>
+            `assets/img/productos/antivirus/${name
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/^-|-$/g, "")}.png`;
+
           const securityCardFor = (group, item) => {
             const [name, detail, customPrice, customImage] = item;
             const price = customPrice ?? group.homePrice;
-            const image = customImage || group.image;
+            const image = securityImageFor(name);
             const text = encodeURIComponent(`Hola Computer Corner, quiero consultar por ${name}.`);
             return `
               <article class="product-card security-version-card">
-                <img class="product-thumb-img" src="${image}" alt="${group.alt}">
+                <img class="product-thumb-img" src="${image}" alt="Miniatura ${name}">
                 <span class="product-badge price-badge">S/ ${price}</span>
                 <h3>${name}</h3>
                 <p>${group.summary}</p>
