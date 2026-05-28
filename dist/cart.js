@@ -110,6 +110,20 @@
     };
   }
 
+  function arrangeProductCardHeaders() {
+    document.querySelectorAll(".product-card").forEach((card) => {
+      if (card.querySelector(".product-card-heading")) return;
+      const badge = card.querySelector(":scope > .price-badge");
+      const title = card.querySelector(":scope > h3");
+      if (!badge || !title) return;
+
+      const heading = document.createElement("div");
+      heading.className = "product-card-heading";
+      badge.before(heading);
+      heading.append(badge, title);
+    });
+  }
+
   function addProductInfoButtons() {
     document.querySelectorAll(".product-card").forEach((card) => {
       if (card.querySelector(".product-info-button")) return;
@@ -645,6 +659,7 @@
     if (button.dataset.action === "remove") removeFromCart(name);
   });
 
+  arrangeProductCardHeaders();
   addProductInfoButtons();
   addBuyButtons();
   normalizeCartPrices();
