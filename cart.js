@@ -53,7 +53,7 @@
   }
 
   function productNameFrom(card) {
-    return card.querySelector("h3")?.textContent.trim() || "Producto";
+    return card.dataset.productName || card.querySelector("h3")?.textContent.trim() || "Producto";
   }
 
   function priceFromText(value) {
@@ -120,7 +120,7 @@
       const heading = document.createElement("div");
       heading.className = "product-card-heading";
       badge.before(heading);
-      heading.append(badge, title);
+      heading.append(title, badge);
     });
   }
 
@@ -149,7 +149,7 @@
       const button = document.createElement("button");
       button.className = "buy-button";
       button.type = "button";
-      button.textContent = "Comprar";
+      button.textContent = "Solicitar";
       button.addEventListener("click", () => addToCart({ name, category, price }));
       const actions = card.querySelector(".product-card-actions") || card;
       actions.appendChild(button);
@@ -161,7 +161,7 @@
       const button = document.createElement("button");
       button.className = "buy-button";
       button.type = "button";
-      button.textContent = "Comprar";
+      button.textContent = "Solicitar";
       button.addEventListener("click", () =>
         addToCart({
           name: "ROM y flasheo de celulares Android",
