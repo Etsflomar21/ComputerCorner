@@ -27,6 +27,7 @@
     </a>
 
     <nav class="nav" aria-label="Navegación principal">
+      <a href="index.html#inicio">Inicio</a>
       <a href="productos.html">Venta</a>
       <a href="streaming.html">Streaming</a>
       <a href="servicios-profesionales.html">Asesorías</a>
@@ -55,11 +56,26 @@
         <p class="hero-copy">
           Desarrollo páginas web, brindo soporte técnico presencial y remoto con programas confiables, optimizo equipos, configuro redes y asesoro para usar mejor la tecnología.
         </p>
-        <div class="hero-actions">
-          <a class="button primary" href="https://wa.me/51918260798?text=Hola%20Computer%20Corner%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" rel="noreferrer">Solicitar cotización</a>
-          <a class="button secondary" href="#servicios">Ver servicios</a>
-        </div>
+        <form class="hero-search" data-hero-search role="search" aria-label="Buscar productos o servicios">
+          <label for="hero-search-input">Buscar rápido</label>
+          <div class="hero-search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M10.8 4a6.8 6.8 0 0 1 5.4 10.9l3.4 3.4-1.4 1.4-3.4-3.4A6.8 6.8 0 1 1 10.8 4Zm0 2a4.8 4.8 0 1 0 0 9.6 4.8 4.8 0 0 0 0-9.6Z"></path>
+            </svg>
+            <input id="hero-search-input" type="search" data-hero-search-input placeholder="Busca Windows, streaming, tesis, soporte..." autocomplete="off">
+            <button type="submit">Ir</button>
+          </div>
+          <div class="hero-search-suggestions" data-hero-suggestions aria-label="Sugerencias de búsqueda"></div>
+        </form>
       </div>
+    </section>
+
+    <section class="hero-search-results" data-hero-results hidden aria-label="Resultados sugeridos">
+      <div class="hero-results-heading">
+        <p class="section-kicker">Resultados sugeridos</p>
+        <h2>Opciones relacionadas con tu búsqueda</h2>
+      </div>
+      <div class="hero-results-grid" data-hero-results-grid></div>
     </section>
 
     <section class="section quick-access" id="venta" aria-label="Accesos rápidos">
@@ -233,6 +249,7 @@
     <div class="contact-modal-backdrop" data-close-contact-modal></div>
     <section class="contact-modal-card" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
       <button class="contact-modal-close" type="button" data-close-contact-modal aria-label="Cerrar aviso">×</button>
+      <span class="contact-modal-countdown" data-contact-countdown aria-live="polite">Cierra en 10s</span>
       <p class="section-kicker">Atención rápida</p>
       <h2 id="contact-modal-title">Cuéntame qué necesitas y te respondo con una ruta clara.</h2>
       <p>Soporte, instalación, desarrollo web, redes, compras tecnológicas o asesoría: reviso tu caso y te indico el siguiente paso.</p>
@@ -318,12 +335,25 @@
     (() => {
       const modal = document.querySelector("[data-contact-modal]");
       const closeButtons = document.querySelectorAll("[data-close-contact-modal]");
+      const countdown = document.querySelector("[data-contact-countdown]");
+      const autoCloseSeconds = 10;
+      let closeTimer;
+      let countdownTimer;
+      let remainingSeconds = autoCloseSeconds;
 
       if (!modal) {
         return;
       }
 
+      const renderCountdown = () => {
+        if (countdown) {
+          countdown.textContent = `Cierra en ${remainingSeconds}s`;
+        }
+      };
+
       const closeModal = () => {
+        window.clearTimeout(closeTimer);
+        window.clearInterval(countdownTimer);
         modal.classList.remove("is-open");
         modal.setAttribute("aria-hidden", "true");
         document.body.classList.remove("modal-open");
@@ -333,6 +363,13 @@
         modal.classList.add("is-open");
         modal.setAttribute("aria-hidden", "false");
         document.body.classList.add("modal-open");
+        remainingSeconds = autoCloseSeconds;
+        renderCountdown();
+        countdownTimer = window.setInterval(() => {
+          remainingSeconds -= 1;
+          renderCountdown();
+        }, 1000);
+        closeTimer = window.setTimeout(closeModal, autoCloseSeconds * 1000);
       });
 
       closeButtons.forEach((button) => button.addEventListener("click", closeModal));
@@ -341,6 +378,102 @@
           closeModal();
         }
       });
+    })();
+
+    (() => {
+      const form = document.querySelector("[data-hero-search]");
+      const input = document.querySelector("[data-hero-search-input]");
+      const suggestionsBox = document.querySelector("[data-hero-suggestions]");
+      const resultsSection = document.querySelector("[data-hero-results]");
+      const resultsGrid = document.querySelector("[data-hero-results-grid]");
+      if (!form || !input || !suggestionsBox || !resultsSection || !resultsGrid) return;
+
+      const routes = [
+        { label: "Productos digitales", hint: "Office, Windows, Linux, macOS, antivirus y Android", url: "productos.html", image: "assets/img/productos/office-365.png", terms: ["producto", "office", "windows", "linux", "macos", "antivirus", "android", "rom", "flasheo", "defender", "kaspersky", "norton", "eset"] },
+        { label: "Streaming", hint: "Netflix, Disney, Prime, Max, anime y deportes", url: "streaming.html", image: "assets/img/streaming/netflix.png", terms: ["streaming", "netflix", "prime", "disney", "max", "hulu", "crunchyroll", "espn", "dazn", "pelicula", "serie", "anime"] },
+        { label: "Asesoría profesional", hint: "Tesis, tareas, programación, Power BI y diseño", url: "servicios-profesionales.html", image: "assets/computer-corner-logo.png", terms: ["asesoria", "asesoría", "tesis", "tarea", "programacion", "programación", "power bi", "excel", "uml", "canva", "diseño", "suficiencia", "examen"] },
+        { label: "Soporte técnico", hint: "Mantenimiento, redes, web, remoto y formateo", url: "index.html#servicios", image: "assets/computer-corner-logo.png", terms: ["servicio", "soporte", "mantenimiento", "formateo", "redes", "wifi", "web", "pagina", "página", "remoto"] },
+      ];
+      const suggestions = [
+        ["Microsoft 365", "Office por suscripción", "productos.html?buscar=Microsoft%20365", "assets/img/productos/office-365.png", ["365", "microsoft 365", "office 365"]],
+        ["Office 2024", "Producto digital Office", "productos.html?buscar=Office%202024", "assets/img/productos/office-24.png", ["office 2024", "2024"]],
+        ["Office 2021", "Producto digital Office", "productos.html?buscar=Office%202021", "assets/img/productos/office-21.png", ["office 2021", "2021"]],
+        ["Windows 11", "Sistema operativo Windows", "productos.html?buscar=Windows%2011", "assets/img/productos/Windows/windows-11.png", ["windows 11", "w11"]],
+        ["Windows 10", "Sistema operativo Windows", "productos.html?buscar=Windows%2010", "assets/img/productos/Windows/windows-10.png", ["windows 10", "w10"]],
+        ["Windows Server", "Sistemas para servidor", "productos.html?buscar=Windows%20Server", "assets/img/productos/Windows/server-2022.png", ["server", "servidor", "windows server"]],
+        ["Ubuntu Linux", "Instalación Linux", "productos.html?buscar=Ubuntu", "assets/img/productos/Linux/linux-ubuntu.png", ["ubuntu", "linux ubuntu"]],
+        ["Kali Linux", "Linux para ciberseguridad", "productos.html?buscar=Kali", "assets/img/productos/Linux/linux-kali.png", ["kali", "ciberseguridad"]],
+        ["macOS Sequoia", "Instalación macOS", "productos.html?buscar=Sequoia", "assets/img/productos/macos/macos-sequoia.png", ["sequoia", "macos sequoia"]],
+        ["ROM y flasheo Android", "Servicio técnico Android", "productos.html?buscar=Android", "assets/img/productos/os-android.png", ["android", "rom", "flasheo", "samsung", "xiaomi", "huawei"]],
+        ["ESET NOD32 Antivirus", "Antivirus y seguridad", "productos.html?buscar=ESET%20NOD32", "assets/img/productos/antivirus/eset-nod32-antivirus.png", ["nod", "nod32", "eset", "antivirus nod"]],
+        ["Microsoft Defender", "Seguridad integrada", "productos.html?buscar=Microsoft%20Defender", "assets/img/productos/antivirus/microsoft-defender.png", ["defender", "microsoft defender"]],
+        ["Kaspersky", "Antivirus y seguridad", "productos.html?buscar=Kaspersky", "assets/img/productos/antivirus/kaspersky-standard.png", ["kaspersky", "kasper"]],
+        ["Norton 360", "Antivirus y seguridad", "productos.html?buscar=Norton", "assets/img/productos/antivirus/norton-360-standard.png", ["norton", "norton 360"]],
+        ["Malwarebytes", "Limpieza y protección", "productos.html?buscar=Malwarebytes", "assets/img/productos/antivirus/malwarebytes-premium.png", ["malware", "malwarebytes"]],
+        ["Bitdefender", "Antivirus y seguridad", "productos.html?buscar=Bitdefender", "assets/img/productos/antivirus/bitdefender-total-security.png", ["bitdefender", "bit"]],
+        ["Netflix", "Streaming películas y series", "streaming.html", "assets/img/streaming/netflix.png", ["netflix", "peliculas", "series"]],
+        ["Disney+", "Streaming familiar", "streaming.html", "assets/img/streaming/disneyplus.png", ["disney", "disney plus"]],
+        ["Amazon Prime Video", "Streaming películas y series", "streaming.html", "assets/img/streaming/primevideo.png", ["prime", "amazon prime", "prime video"]],
+        ["Crunchyroll", "Anime y contenido asiático", "streaming.html", "assets/img/streaming/crunchyroll.png", ["crunchyroll", "anime"]],
+        ["ESPN+ / DAZN", "Deportes en vivo", "streaming.html", "assets/img/streaming/espn.png", ["espn", "dazn", "deportes"]],
+        ["Tesis y RSL", "Asesoría profesional", "servicios-profesionales.html", "assets/computer-corner-logo.png", ["tesis", "rsl", "sustentacion"]],
+        ["Programación", "Asesoría y desarrollo", "servicios-profesionales.html", "assets/computer-corner-logo.png", ["programacion", "programación", "java", "python", "php"]],
+        ["Power BI y Excel", "Reportes y dashboards", "servicios-profesionales.html", "assets/computer-corner-logo.png", ["power bi", "excel", "dashboard"]],
+        ["Diseño en Canva", "Material visual y presentaciones", "servicios-profesionales.html", "assets/computer-corner-logo.png", ["canva", "diseño", "presentacion"]],
+        ["Soporte técnico", "Mantenimiento, formateo y reparación", "index.html#servicios", "assets/computer-corner-logo.png", ["soporte", "mantenimiento", "formateo", "reparacion"]],
+        ["Redes y Wi-Fi", "Configuración de redes", "index.html#servicios", "assets/computer-corner-logo.png", ["redes", "wifi", "router", "mikrotik"]],
+        ["Desarrollo web", "Páginas web y landing pages", "index.html#servicios", "assets/computer-corner-logo.png", ["web", "pagina", "landing", "sitio"]],
+      ].map(([label, hint, url, image, terms]) => ({ label, hint, url, image, terms }));
+      const searchItems = [...suggestions, ...routes];
+
+      const normalize = (value) =>
+        String(value || "")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .trim();
+
+      const renderSuggestions = () => {
+        const query = normalize(input.value);
+        if (!query) {
+          suggestionsBox.innerHTML = "";
+          suggestionsBox.hidden = true;
+          resultsGrid.innerHTML = "";
+          resultsSection.hidden = true;
+          return;
+        }
+
+        const matches = searchItems
+          .filter((item) => item.terms.some((term) => normalize(term).includes(query) || query.includes(normalize(term))) || normalize(item.label).includes(query) || normalize(item.hint).includes(query))
+          .slice(0, 6);
+
+        suggestionsBox.innerHTML = matches
+          .map((item) => `<button type="button" data-route="${item.url}"><img src="${item.image}" alt=""><span><strong>${item.label}</strong><small>${item.hint}</small></span></button>`)
+          .join("");
+        suggestionsBox.hidden = matches.length === 0;
+        resultsGrid.innerHTML = matches
+          .map((item) => `<a href="${item.url}"><img src="${item.image}" alt=""><span><strong>${item.label}</strong><small>${item.hint}</small></span></a>`)
+          .join("");
+        resultsSection.hidden = matches.length === 0;
+      };
+
+      suggestionsBox.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-route]");
+        if (!button) return;
+        window.location.href = button.dataset.route;
+      });
+
+      input.addEventListener("input", renderSuggestions);
+      input.addEventListener("focus", renderSuggestions);
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const query = normalize(input.value);
+        const match = searchItems.find((item) => item.terms.some((term) => query.includes(normalize(term))) || normalize(item.label).includes(query) || normalize(item.hint).includes(query));
+        window.location.href = match ? match.url : `productos.html?buscar=${encodeURIComponent(input.value.trim())}`;
+      });
+
+      renderSuggestions();
     })();
   </script>
   <script src="account.js"></script>

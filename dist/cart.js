@@ -101,10 +101,12 @@
     return {
       name: productNameFrom(card),
       category: productCategoryFrom(card),
-      image: card.querySelector(".product-thumb-img")?.getAttribute("src") || "",
-      imageAlt: card.querySelector(".product-thumb-img")?.getAttribute("alt") || "",
+      image: card.querySelector(".product-thumb-img, .phone-rom-image")?.getAttribute("src") || "",
+      imageAlt: card.querySelector(".product-thumb-img, .phone-rom-image")?.getAttribute("alt") || "",
       price: card.querySelector(".price-badge")?.textContent.trim() || formatMoney(productPriceFrom(card)),
-      description: card.querySelector(":scope > p")?.textContent.trim() || "Consulta disponibilidad, compatibilidad e instalacion antes de comprar.",
+      description:
+        card.querySelector(":scope > p, .phone-rom-content > p")?.textContent.trim() ||
+        "Consulta disponibilidad, compatibilidad e instalacion antes de comprar.",
       details,
       consultHref: card.querySelector("a")?.href || `https://wa.me/${WHATSAPP_NUMBER}`,
     };
@@ -113,8 +115,8 @@
   function arrangeProductCardHeaders() {
     document.querySelectorAll(".product-card").forEach((card) => {
       if (card.querySelector(".product-card-heading")) return;
-      const badge = card.querySelector(":scope > .price-badge");
-      const title = card.querySelector(":scope > h3");
+      const badge = card.querySelector(":scope > .price-badge, .phone-rom-content > .price-badge");
+      const title = card.querySelector(":scope > h3, .phone-rom-content > h3");
       if (!badge || !title) return;
 
       const heading = document.createElement("div");
@@ -122,6 +124,65 @@
       badge.before(heading);
       heading.append(title, badge);
     });
+  }
+
+  function setupProductCatalogTools() {
+    const search = document.querySelector("[data-product-search]");
+    const filters = [...document.querySelectorAll("[data-product-filter]")];
+    const blocks = [...document.querySelectorAll("[data-catalog-category]")];
+    const empty = document.querySelector("[data-product-empty]");
+    if (!search || !filters.length || !blocks.length) return;
+
+    const normalize = (value) =>
+      String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+
+    const applyFilters = () => {
+      const term = normalize(search.value);
+      const active = document.querySelector("[data-product-filter].is-active")?.dataset.productFilter || "all";
+
+      blocks.forEach((block) => {
+        const categoryMatch = active === "all" || block.dataset.catalogCategory === active;
+        const cards = [...block.querySelectorAll(".product-card")];
+        let visibleCards = 0;
+
+        if (!cards.length) {
+          const blockText = normalize(block.textContent);
+          block.hidden = !(categoryMatch && (!term || blockText.includes(term)));
+          return;
+        }
+
+        cards.forEach((card) => {
+          const text = normalize(card.textContent);
+          const visible = categoryMatch && (!term || text.includes(term));
+          card.hidden = !visible;
+          if (visible) visibleCards += 1;
+        });
+
+        block.hidden = visibleCards === 0;
+      });
+
+      if (empty) {
+        empty.hidden = blocks.some((block) => !block.hidden);
+      }
+    };
+
+    filters.forEach((button) => {
+      button.addEventListener("click", () => {
+        filters.forEach((item) => item.classList.toggle("is-active", item === button));
+        applyFilters();
+      });
+    });
+
+    const initialSearch = new URLSearchParams(window.location.search).get("buscar");
+    if (initialSearch) {
+      search.value = initialSearch;
+    }
+
+    search.addEventListener("input", applyFilters);
+    applyFilters();
   }
 
   function addProductInfoButtons() {
@@ -155,7 +216,7 @@
       actions.appendChild(button);
     });
 
-    const romPanel = document.querySelector(".phone-rom-panel");
+    const romPanel = document.querySelector(".phone-rom-panel:not(.product-card)");
     if (romPanel && !romPanel.querySelector(".buy-button")) {
       const price = priceFromText(romPanel.querySelector(".price-badge")?.textContent);
       const button = document.createElement("button");
@@ -660,6 +721,7 @@
   });
 
   arrangeProductCardHeaders();
+  setupProductCatalogTools();
   addProductInfoButtons();
   addBuyButtons();
   normalizeCartPrices();

@@ -69,7 +69,24 @@
         <p class="catalog-price-note">Precios referenciales en soles, sujetos a disponibilidad, versión solicitada y validación del equipo.</p>
       </div>
 
-      <div class="catalog-block">
+      <div class="catalog-tools" aria-label="Herramientas del catálogo">
+        <label class="catalog-search">
+          <span>Buscar producto</span>
+          <input type="search" data-product-search placeholder="Buscar Office, Windows, antivirus..." autocomplete="off">
+        </label>
+        <div class="catalog-filters" aria-label="Filtrar por categoría">
+          <button type="button" class="is-active" data-product-filter="all">Todo</button>
+          <button type="button" data-product-filter="office">Office</button>
+          <button type="button" data-product-filter="windows">Windows</button>
+          <button type="button" data-product-filter="linux">Linux</button>
+          <button type="button" data-product-filter="macos">macOS</button>
+          <button type="button" data-product-filter="antivirus">Antivirus</button>
+          <button type="button" data-product-filter="android">Android</button>
+        </div>
+      </div>
+      <p class="catalog-empty" data-product-empty hidden>No encontré productos con ese filtro. Prueba con otra categoría o palabra.</p>
+
+      <div class="catalog-block" data-catalog-category="office">
         <div class="catalog-heading">
           <div class="catalog-title">
             <span class="category-icon office-category-icon" aria-hidden="true">
@@ -96,7 +113,7 @@
 
           <article class="product-card" data-product-name="Office 2024">
             <img class="product-thumb-img" src="assets/img/productos/office-24.png" alt="Miniatura Office 2024">
-            <span class="product-badge price-badge">S/ 35</span>
+            <span class="product-badge price-badge">S/ 70</span>
             <h3 class="product-split-title"><span>Office</span><small>2024</small></h3>
             <p>Versión Office 2024 en español [es-ES], ideal para equipos actuales y uso de oficina.</p>
             <ul class="product-details">
@@ -109,7 +126,7 @@
 
           <article class="product-card" data-product-name="Office 2021">
             <img class="product-thumb-img" src="assets/img/productos/office-21.png" alt="Miniatura Office 2021">
-            <span class="product-badge price-badge">S/ 30</span>
+            <span class="product-badge price-badge">S/ 60</span>
             <h3 class="product-split-title"><span>Office</span><small>2021</small></h3>
             <p>Paquete Office 2021 en español [es-ES] para productividad, documentos y presentaciones.</p>
             <ul class="product-details">
@@ -122,7 +139,7 @@
 
           <article class="product-card" data-product-name="Office 2019">
             <img class="product-thumb-img" src="assets/img/productos/office-19.png" alt="Miniatura Office 2019">
-            <span class="product-badge price-badge">S/ 45</span>
+            <span class="product-badge price-badge">S/ 50</span>
             <h3 class="product-split-title"><span>Office</span><small>2019</small></h3>
             <p>Office 2019 en español [es-ES], una opción práctica para equipos compatibles.</p>
             <ul class="product-details">
@@ -135,7 +152,7 @@
 
           <article class="product-card" data-product-name="Office 2016">
             <img class="product-thumb-img" src="assets/img/productos/office-16.png" alt="Miniatura Office 2016">
-            <span class="product-badge price-badge">S/ 119</span>
+            <span class="product-badge price-badge">S/ 40</span>
             <h3 class="product-split-title"><span>Office</span><small>2016</small></h3>
             <p>Consulta compatibilidad e instalación de Office 2016 en español [es-ES].</p>
             <ul class="product-details">
@@ -148,7 +165,7 @@
 
           <article class="product-card" data-product-name="Office 2013">
             <img class="product-thumb-img" src="assets/img/productos/office-13.png" alt="Miniatura Office 2013">
-            <span class="product-badge price-badge">S/ 49</span>
+            <span class="product-badge price-badge">S/ 30</span>
             <h3 class="product-split-title"><span>Office</span><small>2013</small></h3>
             <p>Opción en español [es-ES] para equipos antiguos o requerimientos específicos. Consulta disponibilidad.</p>
             <ul class="product-details">
@@ -161,7 +178,7 @@
         </div>
       </div>
 
-      <div class="catalog-block">
+      <div class="catalog-block" data-catalog-category="windows">
         <div class="catalog-heading">
           <div class="catalog-title">
             <span class="category-icon os-category-icon" aria-hidden="true">
@@ -175,7 +192,7 @@
         <div class="products-grid os-grid" data-os-products="windows"></div>
       </div>
 
-      <div class="catalog-block">
+      <div class="catalog-block" data-catalog-category="linux">
         <div class="catalog-heading">
           <div class="catalog-title">
             <span class="category-icon linux-category-icon" aria-hidden="true">
@@ -189,7 +206,7 @@
         <div class="products-grid os-grid" data-os-products="linux"></div>
       </div>
 
-      <div class="catalog-block">
+      <div class="catalog-block" data-catalog-category="macos">
         <div class="catalog-heading">
           <div class="catalog-title">
             <span class="category-icon macos-category-icon" aria-hidden="true">
@@ -210,7 +227,7 @@
             windows: {
               image: "assets/img/productos/os-windows.png",
               alt: "Miniatura Windows",
-              price: 30,
+              price: 50,
               serverPrice: 90,
               summary: "Instalación limpia, configuración inicial, drivers y revisión de compatibilidad.",
               items: [
@@ -223,9 +240,9 @@
                 ["Windows 7", "Compatibilidad para equipos antiguos", null, "assets/img/productos/Windows/windows-7.png", ["Windows 7 Home Premium", "Windows 7 Professional", "Windows 7 Ultimate", "Windows 7 Enterprise"]],
                 ["Windows Vista", "Recuperación o reinstalación legacy", null, "assets/img/productos/Windows/windows-vista.png", ["Windows Vista Home Basic", "Windows Vista Home Premium", "Windows Vista Business", "Windows Vista Ultimate"]],
                 ["Windows XP", "Equipos legacy o laboratorio", null, "assets/img/productos/Windows/Wndows-xp.png", ["Windows XP Home", "Windows XP Professional", "Windows XP para software antiguo"]],
-                ["Windows Server 2025", "Servidor y servicios empresariales", 90, "assets/img/productos/Windows/server-2025.png", ["Windows Server 2025 Standard", "Windows Server 2025 Datacenter", "Roles, usuarios y servicios base"]],
-                ["Windows Server 2022", "Servidor estable para producción", 90, "assets/img/productos/Windows/server-2022.png", ["Windows Server 2022 Standard", "Windows Server 2022 Datacenter", "Active Directory y servicios base"]],
-                ["Windows Server 2019", "Servidor empresarial compatible", 90, "assets/img/productos/Windows/server-2019.png", ["Windows Server 2019 Standard", "Windows Server 2019 Datacenter", "Configuración de roles compatibles"]],
+                ["Windows Server 2025", "Servidor y servicios empresariales", 399, "assets/img/productos/Windows/server-2025.png", ["Windows Server 2025 Standard", "Windows Server 2025 Datacenter", "Roles, usuarios y servicios base"]],
+                ["Windows Server 2022", "Servidor estable para producción", 399, "assets/img/productos/Windows/server-2022.png", ["Windows Server 2022 Standard", "Windows Server 2022 Datacenter", "Active Directory y servicios base"]],
+                ["Windows Server 2019", "Servidor empresarial compatible", 399, "assets/img/productos/Windows/server-2019.png", ["Windows Server 2019 Standard", "Windows Server 2019 Datacenter", "Configuración de roles compatibles"]],
               ],
             },
             linux: {
@@ -256,7 +273,7 @@
             macos: {
               image: "assets/img/productos/os-macos.png",
               alt: "Miniatura macOS",
-              price: 70,
+              price: 99,
               summary: "Revisión de modelo, respaldo, instalación y configuración inicial.",
               items: [
                 ["macOS Tahoe", "macOS 26", null, "assets/img/productos/macos/macos-tahoe.png", ["Instalación limpia", "Actualización desde versión compatible", "Revisión de modelo Mac"]],
@@ -356,7 +373,7 @@
         })();
       </script>
 
-      <div class="catalog-block">
+      <div class="catalog-block" data-catalog-category="antivirus">
         <div class="catalog-heading">
           <div class="catalog-title">
             <span class="category-icon security-category-icon" aria-hidden="true">
@@ -370,7 +387,7 @@
         <div class="products-grid security-grid" data-security-products="eset"></div>
       </div>
 
-      <div class="catalog-block">
+      <div class="catalog-block" data-catalog-category="antivirus">
         <div class="catalog-heading">
           <div class="catalog-title">
             <span class="category-icon norton-category-icon" aria-hidden="true">
@@ -384,7 +401,7 @@
         <div class="products-grid security-grid" data-security-products="norton"></div>
       </div>
 
-      <div class="catalog-block">
+      <div class="catalog-block" data-catalog-category="antivirus">
         <div class="catalog-heading">
           <div class="catalog-title">
             <span class="category-icon malwarebytes-category-icon" aria-hidden="true">
@@ -398,7 +415,7 @@
         <div class="products-grid security-grid" data-security-products="malwarebytes"></div>
       </div>
 
-      <div class="catalog-block">
+      <div class="catalog-block" data-catalog-category="antivirus">
         <div class="catalog-heading">
           <div class="catalog-title">
             <span class="category-icon security-category-icon" aria-hidden="true">
@@ -412,7 +429,7 @@
         <div class="products-grid security-grid" data-security-products="kaspersky"></div>
       </div>
 
-      <div class="catalog-block">
+      <div class="catalog-block" data-catalog-category="antivirus">
         <div class="catalog-heading">
           <div class="catalog-title">
             <span class="category-icon security-category-icon" aria-hidden="true">
@@ -434,23 +451,23 @@
               brand: "ESET",
               image: "assets/img/productos/antivirus-eset.png",
               alt: "Miniatura ESET",
-              homePrice: 42,
+              homePrice: 50,
               businessPrice: 120,
               summary: "Protección, instalación, activación y configuración inicial.",
               items: [
-                ["ESET NOD32 Antivirus", "Línea Hogar y Usuarios Finales"],
-                ["ESET Internet Security", "Seguridad completa", 65],
-                ["ESET HOME Security Essential", "Línea Hogar y Usuarios Finales"],
-                ["ESET HOME Security Premium", "Línea Hogar y Usuarios Finales"],
-                ["ESET HOME Security Ultimate", "Línea Hogar y Usuarios Finales"],
-                ["ESET Mobile Security para Android", "Línea Hogar y Usuarios Finales"],
-                ["ESET Cyber Security para Mac", "Línea Hogar y Usuarios Finales"],
-                ["ESET Parental Control", "Línea Hogar y Usuarios Finales"],
-                ["ESET Small Business Security", "Línea Corporativa", 120],
-                ["ESET Endpoint Antivirus", "Línea Corporativa", 120],
-                ["ESET Endpoint Security", "Línea Corporativa", 120],
-                ["ESET Server Security", "Empresas y Servidores", 150],
-                ["ESET LiveGuard Advanced", "Empresas y Servidores", 150],
+                ["ESET NOD32 Antivirus", "Línea Hogar y Usuarios Finales", 50],
+                ["ESET Internet Security", "Seguridad completa", 60],
+                ["ESET HOME Security Essential", "Línea Hogar y Usuarios Finales", 50],
+                ["ESET HOME Security Premium", "Línea Hogar y Usuarios Finales", 65],
+                ["ESET HOME Security Ultimate", "Línea Hogar y Usuarios Finales", 75],
+                ["ESET Mobile Security para Android", "Línea Hogar y Usuarios Finales", 50],
+                ["ESET Cyber Security para Mac", "Línea Hogar y Usuarios Finales", 50],
+                ["ESET Parental Control", "Línea Hogar y Usuarios Finales", 50],
+                ["ESET Small Business Security", "Línea Corporativa", 90, null, "Desde S/ 90"],
+                ["ESET Endpoint Antivirus", "Línea Corporativa", 95, null, "Desde S/ 95"],
+                ["ESET Endpoint Security", "Línea Corporativa", 100, null, "Desde S/ 100"],
+                ["ESET Server Security", "Empresas y Servidores", 120, null, "Desde S/ 120"],
+                ["ESET LiveGuard Advanced", "Empresas y Servidores", 140, null, "Desde S/ 140"],
               ],
             },
             norton: {
@@ -550,8 +567,9 @@
               .replace(/^-|-$/g, "")}.png`;
 
           const securityCardFor = (group, item) => {
-            const [name, detail, customPrice, customImage] = item;
+            const [name, detail, customPrice, customImage, customPriceLabel] = item;
             const price = customPrice ?? group.homePrice;
+            const priceLabel = customPriceLabel || `S/ ${price}`;
             const image = customImage || securityImageFor(name);
             const text = encodeURIComponent(`Hola Computer Corner, quiero consultar por ${name}.`);
             const splitTitle = (() => {
@@ -579,7 +597,7 @@
             return `
               <article class="product-card security-version-card" data-product-name="${name}">
                 <img class="product-thumb-img" src="${image}" alt="Miniatura ${name}">
-                <span class="product-badge price-badge">S/ ${price}</span>
+                <span class="product-badge price-badge">${priceLabel}</span>
                 <h3 class="product-split-title"><span>${splitTitle.main}</span><small>${splitTitle.meta}</small></h3>
                 <p>${group.summary}</p>
                 <ul class="product-details">
@@ -600,7 +618,7 @@
         })();
       </script>
 
-      <div class="catalog-block">
+      <div class="catalog-block" data-catalog-category="android">
         <div class="catalog-heading">
           <div class="catalog-title">
             <span class="category-icon android-category-icon" aria-hidden="true">
@@ -611,14 +629,22 @@
           <p>Servicio técnico para reinstalación de sistema, recuperación de software, actualización o flasheo de ROM en equipos Android compatibles.</p>
         </div>
 
-        <div class="phone-rom-panel">
-          <img class="phone-rom-image" src="assets/img/productos/os-android.png" alt="Miniatura ROM y flasheo Android">
+        <div class="phone-rom-panel product-card android-service-card" data-product-name="ROM y flasheo de celulares Android">
+          <div class="phone-rom-visual">
+            <img class="phone-rom-image product-thumb-img" src="assets/img/productos/os-android.png" alt="Miniatura ROM y flasheo Android">
+            <span class="android-glow-badge">Android</span>
+          </div>
           <div class="phone-rom-content">
             <span class="product-badge price-badge">S/ 60</span>
             <h3>Flasheo y reinstalación de sistema Android</h3>
             <p>
               Consulta por ROM oficial o compatible para equipos Android. Se realiza diagnóstico previo para revisar modelo, estado del equipo, versión del sistema y riesgo antes de proceder.
             </p>
+            <ul class="product-details android-details">
+              <li>Diagnóstico de modelo, región, versión y estado del equipo</li>
+              <li>Reinstalación, actualización, recuperación o flasheo según compatibilidad</li>
+              <li>Precio referencial sujeto a marca, modelo, riesgo y disponibilidad de ROM</li>
+            </ul>
             <div class="brand-chips" aria-label="Marcas Android compatibles">
               <span>Samsung</span>
               <span>Huawei</span>

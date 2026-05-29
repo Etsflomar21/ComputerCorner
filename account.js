@@ -19,6 +19,7 @@
     if (!header || !nav || header.querySelector(".mobile-menu-button")) return;
 
     const requiredLinks = [
+      ["Inicio", "index.html#inicio"],
       ["Venta", "productos.html"],
       ["Streaming", "streaming.html"],
       ["Asesoría", "servicios-profesionales.html"],
