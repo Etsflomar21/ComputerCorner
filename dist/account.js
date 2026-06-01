@@ -20,7 +20,26 @@
 
     const requiredLinks = [
       ["Inicio", "index.html#inicio"],
-      ["Venta", "productos.html"],
+      [
+        "Venta",
+        "productos.html",
+        [
+          ["Office", "office.html"],
+          ["Windows", "windows.html"],
+          ["Antivirus", "antivirus.html"],
+          [
+            "Programs",
+            "programas.html",
+            [
+              ["Windows", "windows.html"],
+              ["Android", "android.html"],
+              ["Linux", "linux.html"],
+              ["macOS", "macos.html"],
+            ],
+          ],
+          ["Android", "android.html"],
+        ],
+      ],
       ["Streaming", "streaming.html"],
       ["Asesoría", "servicios-profesionales.html"],
       ["Servicios", "index.html#servicios"],
@@ -29,7 +48,60 @@
     ];
 
     nav.querySelectorAll("a").forEach((link) => link.remove());
-    requiredLinks.forEach(([label, href]) => {
+    nav.querySelectorAll(".nav-dropdown").forEach((dropdown) => dropdown.remove());
+    requiredLinks.forEach(([label, href, children]) => {
+      if (children?.length) {
+        const dropdown = document.createElement("div");
+        dropdown.className = "nav-dropdown";
+
+        const trigger = document.createElement("a");
+        trigger.href = href;
+        trigger.className = "nav-dropdown-trigger";
+        trigger.textContent = label;
+        trigger.setAttribute("aria-haspopup", "true");
+        trigger.setAttribute("aria-expanded", "false");
+
+        const submenu = document.createElement("div");
+        submenu.className = "nav-submenu";
+        submenu.setAttribute("aria-label", `Categorias de ${label}`);
+        children.forEach(([childLabel, childHref, grandChildren]) => {
+          if (grandChildren?.length) {
+            const childItem = document.createElement("div");
+            childItem.className = "nav-subitem";
+
+            const childTrigger = document.createElement("a");
+            childTrigger.href = childHref;
+            childTrigger.className = "nav-subitem-trigger";
+            childTrigger.textContent = childLabel;
+            childTrigger.setAttribute("aria-haspopup", "true");
+            childTrigger.setAttribute("aria-expanded", "false");
+
+            const childPanel = document.createElement("div");
+            childPanel.className = "nav-subitem-panel";
+            childPanel.setAttribute("aria-label", `Opciones de ${childLabel}`);
+            grandChildren.forEach(([grandLabel, grandHref]) => {
+              const grandLink = document.createElement("a");
+              grandLink.href = grandHref;
+              grandLink.textContent = grandLabel;
+              childPanel.appendChild(grandLink);
+            });
+
+            childItem.append(childTrigger, childPanel);
+            submenu.appendChild(childItem);
+            return;
+          }
+
+          const childLink = document.createElement("a");
+          childLink.href = childHref;
+          childLink.textContent = childLabel;
+          submenu.appendChild(childLink);
+        });
+
+        dropdown.append(trigger, submenu);
+        nav.appendChild(dropdown);
+        return;
+      }
+
       const link = document.createElement("a");
       link.href = href;
       link.textContent = label;

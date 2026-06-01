@@ -132,6 +132,16 @@
     const blocks = [...document.querySelectorAll("[data-catalog-category]")];
     const empty = document.querySelector("[data-product-empty]");
     if (!search || !filters.length || !blocks.length) return;
+    const catalogView = document.body.dataset.catalogView || "all";
+    const viewCategories = {
+      office: ["office"],
+      windows: ["windows"],
+      linux: ["linux"],
+      macos: ["macos"],
+      antivirus: ["antivirus"],
+      android: ["android"],
+      programas: ["windows", "linux", "macos", "android"],
+    }[catalogView];
 
     const normalize = (value) =>
       String(value || "")
@@ -144,7 +154,10 @@
       const active = document.querySelector("[data-product-filter].is-active")?.dataset.productFilter || "all";
 
       blocks.forEach((block) => {
-        const categoryMatch = active === "all" || block.dataset.catalogCategory === active;
+        const category = block.dataset.catalogCategory;
+        const viewMatch = !viewCategories || viewCategories.includes(category);
+        const activeMatch = active === "all" || category === active;
+        const categoryMatch = viewMatch && activeMatch;
         const cards = [...block.querySelectorAll(".product-card")];
         let visibleCards = 0;
 
@@ -170,6 +183,10 @@
     };
 
     filters.forEach((button) => {
+      if (viewCategories && button.dataset.productFilter !== "all" && !viewCategories.includes(button.dataset.productFilter)) {
+        button.hidden = true;
+      }
+
       button.addEventListener("click", () => {
         filters.forEach((item) => item.classList.toggle("is-active", item === button));
         applyFilters();

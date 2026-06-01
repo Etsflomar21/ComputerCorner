@@ -28,7 +28,24 @@
 
     <nav class="nav" aria-label="Navegación principal">
       <a href="index.html#inicio">Inicio</a>
-      <a href="productos.html">Venta</a>
+      <div class="nav-dropdown">
+        <a href="productos.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">Venta</a>
+        <div class="nav-submenu" aria-label="Categorías de venta">
+          <a href="office.html">Office</a>
+          <a href="windows.html">Windows</a>
+          <a href="antivirus.html">Antivirus</a>
+          <div class="nav-subitem">
+            <a href="programas.html" class="nav-subitem-trigger" aria-haspopup="true" aria-expanded="false">Programs</a>
+            <div class="nav-subitem-panel" aria-label="Opciones de Programs">
+              <a href="windows.html">Windows</a>
+              <a href="android.html">Android</a>
+              <a href="linux.html">Linux</a>
+              <a href="macos.html">macOS</a>
+            </div>
+          </div>
+          <a href="android.html">Android</a>
+        </div>
+      </div>
       <a href="streaming.html">Streaming</a>
       <a href="servicios-profesionales.html">Asesorías</a>
       <a href="#servicios">Servicios</a>
@@ -396,21 +413,21 @@
       ];
       const suggestions = [
         ["Microsoft 365", "Office por suscripción", "productos.html?buscar=Microsoft%20365", "assets/img/productos/office-365.png", ["365", "microsoft 365", "office 365"]],
-        ["Office 2024", "Producto digital Office", "productos.html?buscar=Office%202024", "assets/img/productos/office-24.png", ["office 2024", "2024"]],
-        ["Office 2021", "Producto digital Office", "productos.html?buscar=Office%202021", "assets/img/productos/office-21.png", ["office 2021", "2021"]],
-        ["Windows 11", "Sistema operativo Windows", "productos.html?buscar=Windows%2011", "assets/img/productos/Windows/windows-11.png", ["windows 11", "w11"]],
-        ["Windows 10", "Sistema operativo Windows", "productos.html?buscar=Windows%2010", "assets/img/productos/Windows/windows-10.png", ["windows 10", "w10"]],
-        ["Windows Server", "Sistemas para servidor", "productos.html?buscar=Windows%20Server", "assets/img/productos/Windows/server-2022.png", ["server", "servidor", "windows server"]],
-        ["Ubuntu Linux", "Instalación Linux", "productos.html?buscar=Ubuntu", "assets/img/productos/Linux/linux-ubuntu.png", ["ubuntu", "linux ubuntu"]],
-        ["Kali Linux", "Linux para ciberseguridad", "productos.html?buscar=Kali", "assets/img/productos/Linux/linux-kali.png", ["kali", "ciberseguridad"]],
-        ["macOS Sequoia", "Instalación macOS", "productos.html?buscar=Sequoia", "assets/img/productos/macos/macos-sequoia.png", ["sequoia", "macos sequoia"]],
-        ["ROM y flasheo Android", "Servicio técnico Android", "productos.html?buscar=Android", "assets/img/productos/os-android.png", ["android", "rom", "flasheo", "samsung", "xiaomi", "huawei"]],
-        ["ESET NOD32 Antivirus", "Antivirus y seguridad", "productos.html?buscar=ESET%20NOD32", "assets/img/productos/antivirus/eset-nod32-antivirus.png", ["nod", "nod32", "eset", "antivirus nod"]],
-        ["Microsoft Defender", "Seguridad integrada", "productos.html?buscar=Microsoft%20Defender", "assets/img/productos/antivirus/microsoft-defender.png", ["defender", "microsoft defender"]],
-        ["Kaspersky", "Antivirus y seguridad", "productos.html?buscar=Kaspersky", "assets/img/productos/antivirus/kaspersky-standard.png", ["kaspersky", "kasper"]],
-        ["Norton 360", "Antivirus y seguridad", "productos.html?buscar=Norton", "assets/img/productos/antivirus/norton-360-standard.png", ["norton", "norton 360"]],
-        ["Malwarebytes", "Limpieza y protección", "productos.html?buscar=Malwarebytes", "assets/img/productos/antivirus/malwarebytes-premium.png", ["malware", "malwarebytes"]],
-        ["Bitdefender", "Antivirus y seguridad", "productos.html?buscar=Bitdefender", "assets/img/productos/antivirus/bitdefender-total-security.png", ["bitdefender", "bit"]],
+        ["Office 2024", "Producto digital Office", "office.html?buscar=Office%202024", "assets/img/productos/office-24.png", ["office 2024", "2024"]],
+        ["Office 2021", "Producto digital Office", "office.html?buscar=Office%202021", "assets/img/productos/office-21.png", ["office 2021", "2021"]],
+        ["Windows 11", "Sistema operativo Windows", "windows.html?buscar=Windows%2011", "assets/img/productos/Windows/windows-11.png", ["windows 11", "w11"]],
+        ["Windows 10", "Sistema operativo Windows", "windows.html?buscar=Windows%2010", "assets/img/productos/Windows/windows-10.png", ["windows 10", "w10"]],
+        ["Windows Server", "Sistemas para servidor", "windows.html?buscar=Windows%20Server", "assets/img/productos/Windows/server-2022.png", ["server", "servidor", "windows server"]],
+        ["Ubuntu Linux", "Instalación Linux", "linux.html?buscar=Ubuntu", "assets/img/productos/Linux/linux-ubuntu.png", ["ubuntu", "linux ubuntu"]],
+        ["Kali Linux", "Linux para ciberseguridad", "linux.html?buscar=Kali", "assets/img/productos/Linux/linux-kali.png", ["kali", "ciberseguridad"]],
+        ["macOS Sequoia", "Instalación macOS", "macos.html?buscar=Sequoia", "assets/img/productos/macos/macos-sequoia.png", ["sequoia", "macos sequoia"]],
+        ["ROM y flasheo Android", "Servicio técnico Android", "android.html?buscar=Android", "assets/img/productos/os-android.png", ["android", "rom", "flasheo", "samsung", "xiaomi", "huawei"]],
+        ["ESET NOD32 Antivirus", "Antivirus y seguridad", "antivirus.html?buscar=ESET%20NOD32", "assets/img/productos/antivirus/eset-nod32-antivirus.png", ["nod", "nod32", "eset", "antivirus nod"]],
+        ["Microsoft Defender", "Seguridad integrada", "antivirus.html?buscar=Microsoft%20Defender", "assets/img/productos/antivirus/microsoft-defender.png", ["defender", "microsoft defender"]],
+        ["Kaspersky", "Antivirus y seguridad", "antivirus.html?buscar=Kaspersky", "assets/img/productos/antivirus/kaspersky-standard.png", ["kaspersky", "kasper"]],
+        ["Norton 360", "Antivirus y seguridad", "antivirus.html?buscar=Norton", "assets/img/productos/antivirus/norton-360-standard.png", ["norton", "norton 360"]],
+        ["Malwarebytes", "Limpieza y protección", "antivirus.html?buscar=Malwarebytes", "assets/img/productos/antivirus/malwarebytes-premium.png", ["malware", "malwarebytes"]],
+        ["Bitdefender", "Antivirus y seguridad", "antivirus.html?buscar=Bitdefender", "assets/img/productos/antivirus/bitdefender-total-security.png", ["bitdefender", "bit"]],
         ["Netflix", "Streaming películas y series", "streaming.html", "assets/img/streaming/netflix.png", ["netflix", "peliculas", "series"]],
         ["Disney+", "Streaming familiar", "streaming.html", "assets/img/streaming/disneyplus.png", ["disney", "disney plus"]],
         ["Amazon Prime Video", "Streaming películas y series", "streaming.html", "assets/img/streaming/primevideo.png", ["prime", "amazon prime", "prime video"]],
